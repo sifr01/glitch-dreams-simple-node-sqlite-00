@@ -1,5 +1,7 @@
 # sifr's notes
 
+test commit
+
 ## Github repo sync:
 When you import a GitHub repository into Glitch, it does not automatically set up a Git remote.
 You can manually initialize a Git repository and add a remote and then manually push or pull changes from within the glitch terminal:
