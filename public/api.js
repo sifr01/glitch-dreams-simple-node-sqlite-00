@@ -51,12 +51,13 @@ export async function handleApiButtonClick(apiOutput) {
       // break;
         // } else { execute function
   try {
-      const data = await apiCall();
-      const username = data.results[0].login.username; // Get the username
-      apiOutput.innerHTML = username; // Update the DOM with the username
+      const apiDataObject = await apiCall();
+    //   const username = data.results[0].login.username; // Get the username
+    const apiDataString = JSON.stringify(apiDataObject)
+      apiOutput.innerHTML = apiDataString; // Update the DOM with the API call data
 
-      // Insert the username into the SQLite database
-      await insertAPIdata(username);
+      // Insert the weather data object into the SQLite database
+      await insertAPIdata(apiDataString);
   } catch (error) {
       console.error("Error in API call:", error);
   }
