@@ -1,7 +1,9 @@
 // client-side js
 // run by the browser each time your view template referencing it is loaded
 
-console.log("hello world :o");
+import { apiCall } from './api.js';   // Import the apiCall function
+
+console.log("client.js is running");
 
 const dreams = [];
 
@@ -10,6 +12,10 @@ const dreamsForm = document.forms[0];
 const dreamInput = dreamsForm.elements["dream"];
 const dreamsList = document.getElementById("dreams");
 const clearButton = document.querySelector('#clear-dreams');
+
+const apiOutput = document.getElementById("api-output");
+const apiButton = document.querySelector('#api-button');
+
 
 // request the dreams from our app's sqlite database
 fetch("/getDreams", {})
@@ -59,4 +65,19 @@ clearButton.addEventListener('click', event => {
       console.log("cleared dreams");
     });
   dreamsList.innerHTML = "";
+});
+
+apiButton.addEventListener('click', event => {
+  console.log("api button clicked");
+
+  apiCall()
+  .then(data => {
+      console.log("Data received:", data);
+      apiOutput.innerHTML = data.results[0].login.username;
+  })
+  .catch(error => {
+      console.error("Error in API call:", error);
+  });
+  
+
 });
