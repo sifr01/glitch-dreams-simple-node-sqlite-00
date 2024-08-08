@@ -59,14 +59,16 @@ const appendNewData = weatherObject => {
 //   dreamInput.focus();
 // };
 
-// event listener for clearButton
+// event listener for clearButton:
+  // 1. hits server endpoint which triggers deletion of all entries from table and
+  // 2. clears DOM of all API data
 clearButton.addEventListener('click', event => {
-  fetch("/clearDreams", {})
+  fetch("/clearDOM", {})
     .then(res => res.json())
     .then(response => {
-      console.log("cleared dreams");
+      console.log("cleared DOM of all API data and deleted all entries from table");
     });
-  dreamsList.innerHTML = "";
+    apiOutput.innerHTML = "";
 });
 
 // event listener for apiButton

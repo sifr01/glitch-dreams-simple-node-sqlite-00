@@ -108,7 +108,7 @@ app.post('/addAPIdata', (req, res) => {
 });
 
 // endpoint to clear weatherObject from the database
-app.get("/clearDreams", (request, response) => {
+app.get("/clearDOM", (request, response) => {
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
   if (!process.env.DISALLOW_WRITE) {
     db.each(
