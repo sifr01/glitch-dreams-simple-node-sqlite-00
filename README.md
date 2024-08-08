@@ -1,22 +1,5 @@
 # sifr's notes
 
-## SQLite database:
-1. SQLite3 database is can be found by accessing the terminal in glitch:
-
-`sqlite3 .data/sqlite.db`
-
-2. Then view tables:
-
-`.tables`
-
-3. Then:
-
-`SELECT * FROM Dreams;`
-
-4. To leave the sqlite3 prompt:
-
-`.quit`
-
 ## Github repo sync:
 When you import a GitHub repository into Glitch, it does not automatically set up a Git remote.
 You can manually initialize a Git repository and add a remote and then manually push or pull changes from within the glitch terminal:
@@ -41,12 +24,30 @@ You can manually initialize a Git repository and add a remote and then manually 
 
 ## Running the app locally:
 
-Be sure to create the necessary files and folders:
+Be sure to create the necessary folder and install dependencies
 
 ```
 mkdir .data
 npm install
+sudo apt install sqlite3
 ```
+
+## SQLite database:
+1. SQLite3 database is can be found by accessing the terminal in glitch:
+
+`sqlite3 .data/sqlite.db`
+
+2. Then view tables:
+
+`.tables`
+
+3. Then:
+
+`SELECT * FROM Dreams;`
+
+4. To leave the sqlite3 prompt:
+
+`.quit`
 
 -----------------------------------
 
