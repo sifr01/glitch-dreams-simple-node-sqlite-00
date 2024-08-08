@@ -3,7 +3,7 @@
 // const url = "https://jsonplaceholder.typicode.com/todos/1";
 const url = "https://randomuser.me/api/";
 
-// // Function to make an API call
+// Function to make an API call
 async function apiCall() {
   try {
       const response = await fetch(url);
@@ -18,13 +18,41 @@ async function apiCall() {
   }
 }
 
+
+// Function to insert API data into sqlite database
+async function insertAPIdata(APIdata) {
+  try {
+      const response = await fetch('/addAPIdata', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ APIdata }),
+      });
+
+      if (!response.ok) {
+          throw new Error(`Error inserting user data: ${response.status}`);
+      }
+
+      // const result = await response.json();
+      console.log(result);
+      console.log("User inserted:", APIdata);
+  } catch (error) {
+      console.error("Error inserting user data:", error);
+  }
+}
+
+
 // Function to handle the API button click
 export async function handleApiButtonClick(apiOutput) {
   console.log("API button clicked");
   try {
       const data = await apiCall();
-      console.log("Data received:", data);
-      apiOutput.innerHTML = data.results[0].login.username; // Update the DOM with the username
+      const username = data.results[0].login.username; // Get the username
+      apiOutput.innerHTML = username; // Update the DOM with the username
+
+      // Insert the username into the SQLite database
+      await insertAPIdata(username);
   } catch (error) {
       console.error("Error in API call:", error);
   }

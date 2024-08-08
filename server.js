@@ -86,6 +86,27 @@ app.post("/addDream", (request, response) => {
   }
 });
 
+// Endpoint to insert API data into the SQLite database
+app.post('/addAPIdata', (req, res) => {
+  const cleansedAPIdata = cleanseString(req.body.APIdata);
+  // const { username } = req.body; // Assuming you're also inserting the username
+
+  // Prepare the SQL statement for inserting the dream and timestamp
+  const sql = 'INSERT INTO Dreams (dream, time) VALUES (?, ?)';
+
+  // Get the current Unix timestamp
+  const timestamp = currentUnixTimestamp();
+
+  // Insert the cleansed dream and timestamp into the database
+  db.run(sql, [cleansedAPIdata, timestamp], function(err) {
+      if (err) {
+          return res.status(500).json({ error: err.message });
+      }
+      // Respond with the ID of the newly inserted row and the username
+      res.status(201).json({ id: this.cleansedAPIdata, timestamp });
+  });
+});
+
 // endpoint to clear dreams from the database
 app.get("/clearDreams", (request, response) => {
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
