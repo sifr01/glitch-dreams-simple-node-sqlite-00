@@ -21,31 +21,35 @@ const exists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
 
+// Function to get the current Unix timestamp
+const currentUnixTimestamp = () => {
+  return Math.floor(Date.now())};
+console.log("app started at: " + currentUnixTimestamp())
+
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT, unixTimestampS INTEGER)"
+      "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT, time INTEGER)"
     );
     console.log("New table Dreams created!");
 
-    // Get the current Unix timestamp in seconds
-    const currentUnixTimestamp = Math.floor(Date.now() / 1000);
+    
 
     // Insert default dreams with the current timestamp
     db.serialize(() => {
       db.run(
-        'INSERT INTO Dreams (dream, unixTimestampS) VALUES (?, ?), (?, ?), (?, ?)',
-        ["Find and count some sheep", currentUnixTimestamp, 
-         "Climb a really tall mountain", currentUnixTimestamp, 
-         "Wash the dishes", currentUnixTimestamp]
+        'INSERT INTO Dreams (dream, time) VALUES (?, ?), (?, ?), (?, ?)',
+        ["Find and count some sheep", currentUnixTimestamp(), 
+         "Climb a really tall mountain", currentUnixTimestamp(), 
+         "Wash the dishes", currentUnixTimestamp()]
       );
     });
   } else {
     console.log('Database "Dreams" ready to go!');
     db.each("SELECT * from Dreams", (err, row) => {
       if (row) {
-        console.log(`record: ${row.dream}, added at: ${row.unixTimestampS}`);
+        console.log(`record: ${row.dream}, added at: ${row.time}`);
       }
     });
   }
@@ -72,13 +76,13 @@ app.post("/addDream", (request, response) => {
   // so they can write to the database
   if (!process.env.DISALLOW_WRITE) {
     const cleansedDream = cleanseString(request.body.dream);
-    db.run(`INSERT INTO Dreams (dream) VALUES (?)`, cleansedDream, error => {
+    db.run(`INSERT INTO Dreams (dream, time) VALUES (?, ?)`, [cleansedDream, currentUnixTimestamp()], error => {
       if (error) {
         response.send({ message: "error!" });
       } else {
         response.send({ message: "success" });
       }
-    });
+    });    
   }
 });
 
