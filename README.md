@@ -1,3 +1,17 @@
+# sifr's notes
+
+1. SQLite3 database is can be found by accessing the terminal in glitch:
+
+`sqlite3 .data/sqlite.db`
+
+2. Then view tables:
+
+`.tables`
+
+3. Then:
+
+`SELECT * FROM Dreams;`
+
 # hello-sqlite
 
 A starter that has a database
