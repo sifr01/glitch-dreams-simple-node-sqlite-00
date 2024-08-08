@@ -23,14 +23,14 @@ fetch("/getData", {})
   .then(res => res.json())
   .then(response => {
     response.forEach(row => {
-      appendNewData(row.dream);
+      appendNewData(row.weatherObject);
     });
   });
 
-// a helper function that creates a list item for a given dream
-const appendNewData = dream => {
+// a helper function that creates a list item for a given weatherObject
+const appendNewData = weatherObject => {
   const newListItem = document.createElement("li");
-  newListItem.innerText = dream;
+  newListItem.innerText = weatherObject;
   dataList.appendChild(newListItem);
 };
 

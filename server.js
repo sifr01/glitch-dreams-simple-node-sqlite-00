@@ -30,16 +30,16 @@ console.log("app started at: " + currentUnixTimestamp())
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT, time INTEGER)"
+      "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)"
     );
     console.log("New table BeachTable created!");
 
     
 
-    // Insert default dreams with the current timestamp
+    // Insert default weatherObject with the current timestamp
     db.serialize(() => {
       db.run(
-        'INSERT INTO BeachTable (dream, time) VALUES (?, ?), (?, ?), (?, ?)',
+        'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
         ["Find and count some sheep", currentUnixTimestamp(), 
          "Climb a really tall mountain", currentUnixTimestamp(), 
          "Wash the dishes", currentUnixTimestamp()]
@@ -49,7 +49,7 @@ db.serialize(() => {
     console.log('Table "BeachTable" ready to go!');
     db.each("SELECT * from BeachTable", (err, row) => {
       if (row) {
-        console.log(`record: ${row.dream}, added at: ${row.time}`);
+        console.log(`record: ${row.weatherObject}, added at: ${row.time}`);
       }
     });
   }
@@ -61,22 +61,22 @@ app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
 
-// endpoint to get all the dreams in the database
+// endpoint to get all the weatherObjects in the database
 app.get("/getData", (request, response) => {
   db.all("SELECT * from BeachTable", (err, rows) => {
     response.send(JSON.stringify(rows));
   });
 });
 
-// endpoint to add a dream to the database
+// endpoint to add a weatherObject to the database
 app.post("/addDream", (request, response) => {
-  console.log(`add to dreams ${request.body.dream}`);
+  console.log(`add to weatherObject ${request.body.weatherObject}`);
 
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects
   // so they can write to the database
   if (!process.env.DISALLOW_WRITE) {
-    const cleansedDream = cleanseString(request.body.dream);
-    db.run(`INSERT INTO BeachTable (dream, time) VALUES (?, ?)`, [cleansedDream, currentUnixTimestamp()], error => {
+    const cleansedDream = cleanseString(request.body.weatherObject);
+    db.run(`INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)`, [cleansedDream, currentUnixTimestamp()], error => {
       if (error) {
         response.send({ message: "error!" });
       } else {
@@ -91,13 +91,13 @@ app.post('/addAPIdata', (req, res) => {
   const cleansedAPIdata = cleanseString(req.body.APIdata);
   // const { username } = req.body; // Assuming you're also inserting the username
 
-  // Prepare the SQL statement for inserting the dream and timestamp
-  const sql = 'INSERT INTO BeachTable (dream, time) VALUES (?, ?)';
+  // Prepare the SQL statement for inserting the weatherObject and timestamp
+  const sql = 'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)';
 
   // Get the current Unix timestamp
   const timestamp = currentUnixTimestamp();
 
-  // Insert the cleansed dream and timestamp into the database
+  // Insert the cleansed weatherObject and timestamp into the database
   db.run(sql, [cleansedAPIdata, timestamp], function(err) {
       if (err) {
           return res.status(500).json({ error: err.message });
@@ -107,7 +107,7 @@ app.post('/addAPIdata', (req, res) => {
   });
 });
 
-// endpoint to clear dreams from the database
+// endpoint to clear weatherObject from the database
 app.get("/clearDreams", (request, response) => {
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
   if (!process.env.DISALLOW_WRITE) {
