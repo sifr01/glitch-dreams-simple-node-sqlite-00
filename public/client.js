@@ -1,7 +1,8 @@
+// client.js
 // client-side js
 // run by the browser each time your view template referencing it is loaded
 
-import { apiCall } from './api.js';   // Import the apiCall function
+import { handleApiButtonClick } from './api.js';   // Import the apiCall function
 
 console.log("client.js is running");
 
@@ -58,6 +59,7 @@ dreamsForm.onsubmit = event => {
   dreamInput.focus();
 };
 
+// event listener for clearButton
 clearButton.addEventListener('click', event => {
   fetch("/clearDreams", {})
     .then(res => res.json())
@@ -67,17 +69,7 @@ clearButton.addEventListener('click', event => {
   dreamsList.innerHTML = "";
 });
 
+// event listener for apiButton
 apiButton.addEventListener('click', event => {
-  console.log("api button clicked");
-
-  apiCall()
-  .then(data => {
-      console.log("Data received:", data);
-      apiOutput.innerHTML = data.results[0].login.username;
-  })
-  .catch(error => {
-      console.error("Error in API call:", error);
-  });
-  
-
+  handleApiButtonClick(apiOutput); // Call the function from api.js
 });
