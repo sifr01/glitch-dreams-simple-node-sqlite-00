@@ -2,3 +2,10 @@
 .node-gyp
 node_modules
 .data/*
+
+# ignore everything on the glitch server to help avoid merge conflicts:
+.bash_history
+.config
+.glitch-assets
+.nano
+.node-gyp
