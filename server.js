@@ -25,25 +25,32 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT)"
+      "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT, unixTimestampS INTEGER)"
     );
     console.log("New table Dreams created!");
 
-    // insert default dreams
+    // Get the current Unix timestamp in seconds
+    const currentUnixTimestamp = Math.floor(Date.now() / 1000);
+
+    // Insert default dreams with the current timestamp
     db.serialize(() => {
       db.run(
-        'INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
+        'INSERT INTO Dreams (dream, unixTimestampS) VALUES (?, ?), (?, ?), (?, ?)',
+        ["Find and count some sheep", currentUnixTimestamp, 
+         "Climb a really tall mountain", currentUnixTimestamp, 
+         "Wash the dishes", currentUnixTimestamp]
       );
     });
   } else {
     console.log('Database "Dreams" ready to go!');
     db.each("SELECT * from Dreams", (err, row) => {
       if (row) {
-        console.log(`record: ${row.dream}`);
+        console.log(`record: ${row.dream}, added at: ${row.unixTimestampS}`);
       }
     });
   }
 });
+
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
