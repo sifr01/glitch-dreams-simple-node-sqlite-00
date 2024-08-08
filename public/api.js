@@ -35,7 +35,7 @@ async function insertAPIdata(APIdata) {
       }
 
       // const result = await response.json();
-      console.log(result);
+      // console.log(result);
       console.log("User inserted:", APIdata);
   } catch (error) {
       console.error("Error inserting user data:", error);
@@ -46,6 +46,10 @@ async function insertAPIdata(APIdata) {
 // Function to handle the API button click
 export async function handleApiButtonClick(apiOutput) {
   console.log("API button clicked");
+  //if (current previous timestamp was less than 1.2 hours ago):
+      // return error(API data does not need refreshing - too many queries! try again in an hour);
+      // break;
+        // } else { execute function
   try {
       const data = await apiCall();
       const username = data.results[0].login.username; // Get the username

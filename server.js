@@ -39,15 +39,15 @@ db.serialize(() => {
     // Insert default dreams with the current timestamp
     db.serialize(() => {
       db.run(
-        'INSERT INTO Dreams (dream, time) VALUES (?, ?), (?, ?), (?, ?)',
+        'INSERT INTO BeachDB (dream, time) VALUES (?, ?), (?, ?), (?, ?)',
         ["Find and count some sheep", currentUnixTimestamp(), 
          "Climb a really tall mountain", currentUnixTimestamp(), 
          "Wash the dishes", currentUnixTimestamp()]
       );
     });
   } else {
-    console.log('Database "Dreams" ready to go!');
-    db.each("SELECT * from Dreams", (err, row) => {
+    console.log('Database "BeachDB" ready to go!');
+    db.each("SELECT * from BeachDB", (err, row) => {
       if (row) {
         console.log(`record: ${row.dream}, added at: ${row.time}`);
       }
@@ -62,8 +62,8 @@ app.get("/", (request, response) => {
 });
 
 // endpoint to get all the dreams in the database
-app.get("/getDreams", (request, response) => {
-  db.all("SELECT * from Dreams", (err, rows) => {
+app.get("/getData", (request, response) => {
+  db.all("SELECT * from BeachDB", (err, rows) => {
     response.send(JSON.stringify(rows));
   });
 });
@@ -76,7 +76,7 @@ app.post("/addDream", (request, response) => {
   // so they can write to the database
   if (!process.env.DISALLOW_WRITE) {
     const cleansedDream = cleanseString(request.body.dream);
-    db.run(`INSERT INTO Dreams (dream, time) VALUES (?, ?)`, [cleansedDream, currentUnixTimestamp()], error => {
+    db.run(`INSERT INTO BeachDB (dream, time) VALUES (?, ?)`, [cleansedDream, currentUnixTimestamp()], error => {
       if (error) {
         response.send({ message: "error!" });
       } else {
@@ -92,7 +92,7 @@ app.post('/addAPIdata', (req, res) => {
   // const { username } = req.body; // Assuming you're also inserting the username
 
   // Prepare the SQL statement for inserting the dream and timestamp
-  const sql = 'INSERT INTO Dreams (dream, time) VALUES (?, ?)';
+  const sql = 'INSERT INTO BeachDB (dream, time) VALUES (?, ?)';
 
   // Get the current Unix timestamp
   const timestamp = currentUnixTimestamp();
@@ -112,10 +112,10 @@ app.get("/clearDreams", (request, response) => {
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
   if (!process.env.DISALLOW_WRITE) {
     db.each(
-      "SELECT * from Dreams",
+      "SELECT * from BeachDB",
       (err, row) => {
         console.log("row", row);
-        db.run(`DELETE FROM Dreams WHERE ID=?`, row.id, error => {
+        db.run(`DELETE FROM BeachDB WHERE ID=?`, row.id, error => {
           if (row) {
             console.log(`deleted row ${row.id}`);
           }
