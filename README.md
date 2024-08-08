@@ -12,6 +12,10 @@
 
 `SELECT * FROM Dreams;`
 
+4. To leave the sqlite3 prompt:
+
+`.quit`
+
 # hello-sqlite
 
 A starter that has a database
