@@ -1,5 +1,6 @@
 # sifr's notes
 
+## SQLite database:
 1. SQLite3 database is can be found by accessing the terminal in glitch:
 
 `sqlite3 .data/sqlite.db`
@@ -15,6 +16,40 @@
 4. To leave the sqlite3 prompt:
 
 `.quit`
+
+## Github repo sync:
+When you import a GitHub repository into Glitch, it does not automatically set up a Git remote.
+You can manually initialize a Git repository and add a remote and then manually push or pull changes from within the glitch terminal:
+
+1. Open the Terminal: In your Glitch project, click on the Tools button at the bottom left and select Terminal.
+
+2. Initialize Git (if necessary): If your project is not already a Git repository, you can initialize it:
+
+`git init`
+
+3. Add the Remote: You can add your GitHub repository as a remote. Replace username and repo-name with your GitHub username and repository name:
+
+`git remote add origin https://github.com/username/repo-name.git`
+
+4. Verify the Remote: Now, if you run git remote -v, you should see the remote repository listed:
+
+`git remote -v`
+
+5. For each commit to github, you will need to run the following in the glitch terminal to sync:
+
+`git pull`
+
+## Running the app locally:
+
+Be sure to create the necessary files and folders:
+
+```
+mkdir .data
+npm install
+```
+
+-----------------------------------
+
 
 # hello-sqlite
 
