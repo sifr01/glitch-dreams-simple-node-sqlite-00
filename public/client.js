@@ -2,8 +2,6 @@
 // client-side js
 // run by the browser each time your view template referencing it is loaded
 
-import { handleApiButtonClick } from './api.js';   // Import the apiCall function
-
 console.log("client.js is running");
 
 const dreams = [];
@@ -63,15 +61,19 @@ const appendNewData = weatherObject => {
   // 1. hits server endpoint which triggers deletion of all entries from table and
   // 2. clears DOM of all API data
 clearButton.addEventListener('click', event => {
-  fetch("/clearDOM", {})
-    .then(res => res.json())
+  fetch("/clearDOM", {})        //initiates a GET request to the endpoint /clearDOM 
+    .then(res => res.json())    //promise handler that processes the response from the fetch request. res is the response object returned from the server. The res.json() method is called to read the response body and parse it as JSON. This method also returns a promise that resolves with the result of parsing the body text as JSON.
     .then(response => {
+      apiOutput.innerHTML = "";
       console.log("cleared DOM of all API data and deleted all entries from table");
     });
-    apiOutput.innerHTML = "";
 });
 
 // event listener for apiButton
 apiButton.addEventListener('click', event => {
-  handleApiButtonClick(apiOutput); // Call the function from api.js
+  console.log("API button clicked");
+  fetch("/addAPIdata", {})    //initiates a GET request to the endpoint /addAPIdata 
+  .then(response => {
+    console.log("The API data is: " + response);
+  });
 });
