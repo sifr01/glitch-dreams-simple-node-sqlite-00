@@ -2,6 +2,11 @@
 // where your node app starts
 
 // init project
+// import { handleApiButtonClick } from './api.js';   // Import the apiCall function
+const { handleApiButtonClick } = require('./apiCall.js');
+const { currentUnixTimestamp } = require('./currentUnixTimestamp.js');
+const { insertAPIdata } = require('./insertAPIdata.js');
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -21,11 +26,6 @@ const exists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
 
-// Function to get the current Unix timestamp
-const currentUnixTimestamp = () => {
-  return Math.floor(Date.now())};
-console.log("app started at: " + currentUnixTimestamp())
-
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(() => {
   if (!exists) {
@@ -34,15 +34,15 @@ db.serialize(() => {
     );
     console.log("New table BeachTable created!");
 
-    
+
 
     // Insert default weatherObject with the current timestamp
     db.serialize(() => {
       db.run(
         'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
-        ["Find and count some sheep", currentUnixTimestamp(), 
-         "Climb a really tall mountain", currentUnixTimestamp(), 
-         "Wash the dishes", currentUnixTimestamp()]
+        ["Find and count some sheep", currentUnixTimestamp(),
+          "Climb a really tall mountain", currentUnixTimestamp(),
+          "Wash the dishes", currentUnixTimestamp()]
       );
     });
   } else {
@@ -82,29 +82,37 @@ app.post("/addDream", (request, response) => {
       } else {
         response.send({ message: "success" });
       }
-    });    
+    });
   }
 });
 
 // Endpoint to insert API data into the SQLite database
-app.post('/addAPIdata', (req, res) => {
-  const cleansedAPIdata = cleanseString(req.body.APIdata);
-  // const { username } = req.body; // Assuming you're also inserting the username
+app.get('/addAPIdata', async (req, res) => {
+  console.log('GET request reached the internal server side endpoint');
 
-  // Prepare the SQL statement for inserting the weatherObject and timestamp
-  const sql = 'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)';
+  try {
+    // 1. Make the API call (apiCall.js)
+    const apiData = await handleApiButtonClick(); // Await the result of the API call
+    console.log("handleApiButtonClick() returns: " + apiData); // Log the resolved value
 
-  // Get the current Unix timestamp
-  const timestamp = currentUnixTimestamp();
+    // 2. Cleanse the data (cleanseString())
+    // const cleansedAPIdata = cleanseString(req.body.APIdata);
+    // const apiData = cleanseString(req.body.APIdata);
 
-  // Insert the cleansed weatherObject and timestamp into the database
-  db.run(sql, [cleansedAPIdata, timestamp], function(err) {
-      if (err) {
-          return res.status(500).json({ error: err.message });
-      }
-      // Respond with the ID of the newly inserted row and the username
-      res.status(201).json({ id: this.cleansedAPIdata, timestamp });
-  });
+    // const { username } = req.body; // Assuming you're also inserting the username
+
+    // 3. Insert the APIdata into the database (insertAPIcallData.js)
+    const result = await insertAPIdata(apiData); // Await the insertion result
+    console.log("Data inserted successfully:", result);
+
+    // Send a response back to the client
+    res.status(201).json({ message: "Data inserted successfully", result });
+  } catch (error) {
+    console.error("Error in processing:", error);
+    // Handle the error appropriately
+    res.status(500).json({ error: error.message });
+  }
+
 });
 
 // endpoint to clear weatherObject from the database
@@ -132,10 +140,11 @@ app.get("/clearDOM", (request, response) => {
   }
 });
 
+// Cleanse the API call data - ADD THIS LATER!
 // helper function that prevents html/css/script malice
-const cleanseString = function(string) {
-  return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-};
+// const cleanseString = function(string) {
+//   return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+// };
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, () => {
