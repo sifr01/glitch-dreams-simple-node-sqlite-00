@@ -24,7 +24,6 @@ const url = `https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${l
 // Function to make an API call
 async function apiCall() {
   console.log("apiCall() function called")
-  console.log(`Using API key: ${apiKey}`);
   try {
       const response = await fetch(
         url, {
