@@ -6,7 +6,7 @@ const apiKey = process.env.API_KEY;
 
 // Import the function from todayTomorrowTimestamps.js
 // const { getTodayTomorrowTimestamps } = require('./todayTomorrowTimestamps.js');
-const getTodayTomorrowTimestamps = require('./todayTomorrowTimestamps.js');
+const getTodayTomorrowTimestamps = require('./timeStampofThirtyDays.js');
 
 // const url = "https://jsonplaceholder.typicode.com/todos/1";
 // const url = "https://randomuser.me/api/";
@@ -14,7 +14,7 @@ const getTodayTomorrowTimestamps = require('./todayTomorrowTimestamps.js');
 //times for today and tomorrow
 const timestamps = getTodayTomorrowTimestamps();
 const startTimestamp = timestamps.startOfTodayUnixTimestamp;
-const endTimestamp = timestamps.endOfTomorrowUnixTimestamp;
+const endTimestamp = timestamps.endOf30DaysFromNowUnixTimestamp;
 
 // set GPS co-ordinates
 const lat = "40.4511"
@@ -54,10 +54,8 @@ async function handleApiButtonClick() {
     //   const username = data.results[0].login.username; // Get the username
     const apiDataString = JSON.stringify(apiDataObject);
     return apiDataString;
-
-
-
-    } catch (error) {
+    } 
+  catch (error) {
       console.error("Error in API call:", error);
   }
 }
