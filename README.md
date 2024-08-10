@@ -51,6 +51,19 @@ sudo apt install sqlite3
 
 -----------------------------------
 
+## Example API call data:
+
+Endpoint: 
+
+`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${startTimestamp}&end=${endTimestamp}`
+
+Data as stored in DB:
+```
+10|{"data":[{"height":-0.9937196070594816,"time":"2024-08-09T23:47:00+00:00","type":"low"},{"height":0.8685125273601144,"time":"2024-08-10T05:57:00+00:00","type":"high"},{"height":-0.8766247267372509,"time":"2024-08-10T11:56:00+00:00","type":"low"},{"height":0.9125929883379379,"time":"2024-08-10T18:10:00+00:00","type":"high"},{"height":-0.8647022223319859,"time":"2024-08-11T00:20:00+00:00","type":"low"},{"height":0.7608925307060468,"time":"2024-08-11T06:34:00+00:00","type":"high"},{"height":-0.7314693024644449,"time":"2024-08-11T12:34:00+00:00","type":"low"},{"height":0.746783704972198,"time":"2024-08-11T18:49:00+00:00","type":"high"}],"meta":{"cost":1,"dailyQuota":10,"datum":"MSL","end":"2024-08-11 22:59","lat":40.4511,"lng":-8.8067,"offset":0,"requestCount":1,"start":"2024-08-09 23:00","station":{"distance":23,"lat":40.65,"lng":-8.75,"name":"aveiro","source":"sg"}}}|1723295160576
+```
+
+-----------------------------------
+
 
 # hello-sqlite
 
