@@ -1,11 +1,15 @@
 // apiCall.js
 
+require('dotenv').config();
+const apiKey = process.env.API_KEY;
+
 // const url = "https://jsonplaceholder.typicode.com/todos/1";
 const url = "https://randomuser.me/api/";
 
 // Function to make an API call
 async function apiCall() {
   console.log("apiCall() function called")
+  console.log(`Using API key: ${apiKey}`);
   try {
       const response = await fetch(url);
       if (!response.ok) {
