@@ -1,17 +1,37 @@
 // apiCall.js
 
+// imports and declaration for .env file (API key credentials)
 require('dotenv').config();
 const apiKey = process.env.API_KEY;
 
+// Import the function from todayTomorrowTimestamps.js
+// const { getTodayTomorrowTimestamps } = require('./todayTomorrowTimestamps.js');
+const getTodayTomorrowTimestamps = require('./todayTomorrowTimestamps.js');
+
 // const url = "https://jsonplaceholder.typicode.com/todos/1";
-const url = "https://randomuser.me/api/";
+// const url = "https://randomuser.me/api/";
+
+//times for today and tomorrow
+const timestamps = getTodayTomorrowTimestamps();
+const startTimestamp = timestamps.startOfTodayUnixTimestamp;
+const endTimestamp = timestamps.endOfTomorrowUnixTimestamp;
+
+// set GPS co-ordinates
+const lat = "40.4511"
+const lng = "-8.8067"
+const url = `https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${startTimestamp}&end=${endTimestamp}`;
 
 // Function to make an API call
 async function apiCall() {
   console.log("apiCall() function called")
   console.log(`Using API key: ${apiKey}`);
   try {
-      const response = await fetch(url);
+      const response = await fetch(
+        url, {
+        headers: {
+            'Authorization': apiKey     // Replace with your actual API key
+          }
+        });
       if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
       }
