@@ -2,36 +2,31 @@
 // client-side js
 // run by the browser each time your view template referencing it is loaded
 
-console.log("client.js is running");
+import { displayTideTimesTable } from './tideTimesTable.js'; // Adjust the path if necessary
 
-const dreams = [];
+console.log("client.js is running");
 
 // define variables that reference elements on our page
 // const dreamsForm = document.forms[0];
 // const dreamInput = dreamsForm.elements["dream"];
-const dataList = document.getElementById("dreams");
-const clearButton = document.querySelector('#clear-dreams');
+const dataList = document.getElementById("data");             // This is where the data will be output to the DOM
+const clearButton = document.querySelector('#clear-data');
 
 const apiOutput = document.getElementById("api-output");
 const apiButton = document.querySelector('#api-button');
-
 
 // request the data from our app's sqlite database
 fetch("/getData", {})
   .then(res => res.json())
   .then(response => {
-    response.forEach(row => {
-      appendNewData(row.weatherObject);
-    });
+    // Assuming response is an array and we want the last entry
+    const lastEntry = response[response.length - 1].weatherObject;
+
+    // Call the function to append the last entry data to the DOM
+    displayTideTimesTable(lastEntry, 'dataList'); // Pass the container ID
   });
 
-// a helper function that creates a list item for a given weatherObject
-const appendNewData = weatherObject => {
-  const newListItem = document.createElement("li");
-  newListItem.innerText = weatherObject;
-  dataList.appendChild(newListItem);
-};
-
+// const dreams = [];
 // // listen for the form to be submitted and add a new dream when it is
 // dreamsForm.onsubmit = event => {
 //   // stop our form submission from refreshing the page
