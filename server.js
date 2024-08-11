@@ -11,17 +11,24 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const fs = require("fs");
+const path = require("path");
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static("public"));    // http://expressjs.com/en/starter/static-files.html
 
 // we've started you off with Express,
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static("public"));
+// Ensure the .data directory exists
+const dataDir = path.join(__dirname, '.data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+  console.log(`Created directory: ${dataDir}`);
+}
 
 // init sqlite db
-const dbFile = "./.data/sqlite.db";
+const dbFile = "./server/.data/sqlite.db";
 const exists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
@@ -30,11 +37,15 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)"
+      "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
+      (err) => {
+        if (err) {
+          console.error("Error creating table BeachTable:", err.message);
+        } else {
+          console.log("New table BeachTable created!");
+        }
+      }
     );
-    console.log("New table BeachTable created!");
-
-
 
     // Insert default weatherObject with the current timestamp
     db.serialize(() => {
