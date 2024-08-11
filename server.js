@@ -34,8 +34,10 @@ const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
 
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
+// Check if the database file exists and handle table creation
 db.serialize(() => {
   if (!exists) {
+    // If the database file does not exist, create it and the table
     db.run(
       "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
       (err) => {
@@ -48,24 +50,38 @@ db.serialize(() => {
     );
 
     // Insert dummy data into database for testing purposes
-    // db.serialize(() => {
-    //   db.run(
-    //     'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
-    //     ["Find and count some sheep", currentUnixTimestamp(),
-    //       "Climb a really tall mountain", currentUnixTimestamp(),
-    //       "Wash the dishes", currentUnixTimestamp()]
-    //   );
-    // });
+    db.serialize(() => {
+      db.run(
+        'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
+        [
+          "{This is test entry}", 0,
+          "{This is test entry}", 1,
+          "{This is test entry}", 2]
+      );
+    });
   } else {
-    console.log('Table "BeachTable" ready to go!');
-    db.each("SELECT * from BeachTable", (err, row) => {
-      if (row) {
-        console.log(`record: ${row.weatherObject}, added at: ${row.time}`);
+    // If the database file exists, check for the table
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='BeachTable'", (err, row) => {
+      if (err) {
+        console.error("Error checking for table:", err.message);
+      } else if (!row) {
+        // Table does not exist, create it
+        db.run(
+          "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
+          (err) => {
+            if (err) {
+              console.error("Error creating table BeachTable:", err.message);
+            } else {
+              console.log("New table BeachTable created!");
+            }
+          }
+        );
+      } else {
+        console.log('Table "BeachTable" already exists.');
       }
     });
   }
 });
-
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
