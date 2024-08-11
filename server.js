@@ -45,20 +45,26 @@ db.serialize(() => {
           console.error("Error creating table BeachTable:", err.message);
         } else {
           console.log("New table BeachTable created!");
+
+          // Insert dummy data into database for testing purposes
+          db.run(
+            'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
+            [
+              "{This is test entry}", 0,
+              "{This is test entry}", 1,
+              "{This is test entry}", 2
+            ],
+            (err) => {
+              if (err) {
+                console.error("Error inserting dummy data:", err.message);
+              } else {
+                console.log("Dummy data inserted successfully!");
+              }
+            }
+          );
         }
       }
     );
-
-    // Insert dummy data into database for testing purposes
-    db.serialize(() => {
-      db.run(
-        'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
-        [
-          "{This is test entry}", 0,
-          "{This is test entry}", 1,
-          "{This is test entry}", 2]
-      );
-    });
   } else {
     // If the database file exists, check for the table
     db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='BeachTable'", (err, row) => {
