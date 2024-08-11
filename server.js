@@ -94,7 +94,7 @@ app.get('/getTideTimes', async (req, res) => {
     // 1. Check if more than 7 days have passed since the last tide times table entry
     console.log("Checking if more than 7 days have passed since the last tide times table entry")
     const canCallAPI = await check7days(db); // Pass the database connection to check7days
-    console.log("check7days returns as: " + await check7days(db));
+    console.log("using check7days(), has it been more than 7 days since last tide times API call?: " + await check7days(db));
     if (!canCallAPI) {
         return res.status(429).json({ message: "API call not allowed. Last entry was less than 7 days ago." });
     }

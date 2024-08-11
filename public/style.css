@@ -1,7 +1,13 @@
-/* styles */
+/* styles
 /* called by your view template */
 
-* {
+.error-message {
+  font-weight: bold; /* Make the text bold */
+  margin: 10px 0;   /* Add some margin for spacing */
+  color: red;
+}
+
+/* * {
   box-sizing: border-box;
 }
 
@@ -68,4 +74,4 @@ footer {
   margin-top: 50px;
   padding-top: 25px;
   border-top: 1px solid lightgrey;
-}
+} */
