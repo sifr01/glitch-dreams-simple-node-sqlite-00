@@ -16,9 +16,9 @@ const timestamps = getTodayTomorrowTimestamps();
 const startTimestamp = timestamps.startOfTodayUnixTimestamp;
 const endTimestamp = timestamps.endOf30DaysFromNowUnixTimestamp;
 
-// set GPS co-ordinates
-const lat = "40.4511"
-const lng = "-8.8067"
+// set GPS co-ordinates for station name "viana", portugal
+const lat = "41.683"
+const lng = "-8.833"
 const url = `https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${startTimestamp}&end=${endTimestamp}`;
 
 // Function to make an API call
