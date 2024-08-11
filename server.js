@@ -21,7 +21,7 @@ app.use(express.static("public"));    // http://expressjs.com/en/starter/static-
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
 // Ensure the .data directory exists
-const dataDir = path.join(__dirname, '.data');
+const dataDir = path.join(__dirname, './server/.data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
   console.log(`Created directory: ${dataDir}`);
