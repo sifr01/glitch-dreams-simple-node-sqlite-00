@@ -87,7 +87,7 @@ app.post("/addDream", (request, response) => {
 });
 
 // Endpoint to insert API data into the SQLite database
-app.get('/addAPIdata', async (req, res) => {
+app.get('/getTideTimes', async (req, res) => {
   console.log('GET request reached the internal server side endpoint');
 
   try {

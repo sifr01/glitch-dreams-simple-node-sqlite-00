@@ -2,7 +2,7 @@
 // client-side js
 // run by the browser each time your view template referencing it is loaded
 
-import { displayTideTimesTable } from './tideTimesTable.js'; // Adjust the path if necessary
+import { displayTideTimesTable } from './displayTideTimesTable.js'; // Adjust the path if necessary
 
 console.log("client.js is running");
 
@@ -13,7 +13,7 @@ const dataList = document.getElementById("data");             // This is where t
 const clearButton = document.querySelector('#clear-data');
 
 const apiOutput = document.getElementById("api-output");
-const apiButton = document.querySelector('#api-button');
+const tideTimesButton = document.querySelector('#tide-times-button');
 
 // request the data from our app's sqlite database
 fetch("/getData", {})
@@ -65,10 +65,10 @@ clearButton.addEventListener('click', event => {
 });
 
 // event listener for apiButton
-apiButton.addEventListener('click', event => {
+tideTimesButton.addEventListener('click', event => {
   console.log("API button clicked");
-  fetch("/addAPIdata", {})    //initiates a GET request to the endpoint /addAPIdata 
+  fetch("/getTideTimes", {})    //initiates a GET request to the endpoint /getTideTimes 
   .then(response => {
-    console.log("The API data is: " + response);
+    console.log("The tide times data is: " + response);
   });
 });

@@ -1,4 +1,4 @@
-// tideTimesTable.js
+// displayTideTimesTable.js
 
 // Function to create and display a tide times table
 export const displayTideTimesTable = (weatherObject, containerId) => {
