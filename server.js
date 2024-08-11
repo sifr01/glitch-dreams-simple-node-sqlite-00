@@ -47,15 +47,15 @@ db.serialize(() => {
       }
     );
 
-    // Insert default weatherObject with the current timestamp
-    db.serialize(() => {
-      db.run(
-        'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
-        ["Find and count some sheep", currentUnixTimestamp(),
-          "Climb a really tall mountain", currentUnixTimestamp(),
-          "Wash the dishes", currentUnixTimestamp()]
-      );
-    });
+    // Insert dummy data into database for testing purposes
+    // db.serialize(() => {
+    //   db.run(
+    //     'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
+    //     ["Find and count some sheep", currentUnixTimestamp(),
+    //       "Climb a really tall mountain", currentUnixTimestamp(),
+    //       "Wash the dishes", currentUnixTimestamp()]
+    //   );
+    // });
   } else {
     console.log('Table "BeachTable" ready to go!');
     db.each("SELECT * from BeachTable", (err, row) => {
@@ -111,7 +111,8 @@ app.get('/getTideTimes', async (req, res) => {
     }
 
     // 2. Make the API call to get tide times (getTideTimes.js)
-    const apiData = await getTideTimes(); // Await the result of the API call
+    const tideTimesData = await getTideTimes(); // Await the result of the API call
+    const apiData = JSON.stringify(tideTimesData)
     console.log("getTideTimes() returns: " + apiData); // Log the resolved value
 
     // 3. Cleanse the data (cleanseString())

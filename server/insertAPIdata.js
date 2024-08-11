@@ -3,7 +3,7 @@
 const { currentUnixTimestamp } = require('./currentUnixTimestamp.js');
 
 // init sqlite db
-const dbFile = "./.data/sqlite.db";
+const dbFile = "./server/.data/sqlite.db";
 // const fs = require("fs");
 // const exists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
