@@ -2,10 +2,10 @@
 // where your node app starts
 
 // init project
-// import { handleApiButtonClick } from './api.js';   // Import the apiCall function
-const { handleApiButtonClick } = require('./apiCall.js');
-const { currentUnixTimestamp } = require('./currentUnixTimestamp.js');
-const { insertAPIdata } = require('./insertAPIdata.js');
+const { getTideTimes } = require('./server/getTideTimes.js');
+const { currentUnixTimestamp } = require('./server/currentUnixTimestamp.js');
+const { insertAPIdata } = require('./server/insertAPIdata.js');
+const { check7days } = require('./server/check7days.js');
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -91,25 +91,33 @@ app.get('/getTideTimes', async (req, res) => {
   console.log('GET request reached the internal server side endpoint');
 
   try {
-    // 1. Make the API call (apiCall.js)
-    const apiData = await handleApiButtonClick(); // Await the result of the API call
-    console.log("handleApiButtonClick() returns: " + apiData); // Log the resolved value
+    // 1. Check if more than 7 days have passed since the last tide times table entry
+    console.log("Checking if more than 7 days have passed since the last tide times table entry")
+    const canCallAPI = await check7days(db); // Pass the database connection to check7days
+    console.log("check7days returns as: " + await check7days(db));
+    if (!canCallAPI) {
+        return res.status(429).json({ message: "API call not allowed. Last entry was less than 7 days ago." });
+    }
 
-    // 2. Cleanse the data (cleanseString())
+    // 2. Make the API call to get tide times (getTideTimes.js)
+    const apiData = await getTideTimes(); // Await the result of the API call
+    console.log("getTideTimes() returns: " + apiData); // Log the resolved value
+
+    // 3. Cleanse the data (cleanseString())
     // const cleansedAPIdata = cleanseString(req.body.APIdata);
     // const apiData = cleanseString(req.body.APIdata);
 
     // const { username } = req.body; // Assuming you're also inserting the username
 
-    // 3. Insert the APIdata into the database (insertAPIcallData.js)
+    // 4. Insert the APIdata into the database (insertAPIcallData.js)
     const result = await insertAPIdata(apiData); // Await the insertion result
     console.log("Data inserted successfully:", result);
 
-    // Send a response back to the client
+    // 5. Send a response back to the client
     res.status(201).json({ message: "Data inserted successfully", result });
   } catch (error) {
     console.error("Error in processing:", error);
-    // Handle the error appropriately
+    // 6. Handle the error appropriately
     res.status(500).json({ error: error.message });
   }
 

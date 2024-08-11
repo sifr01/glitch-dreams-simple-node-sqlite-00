@@ -1,4 +1,4 @@
-// apiCall.js
+// getTideTimes.js
 
 // imports and declaration for .env file (API key credentials)
 require('dotenv').config();
@@ -22,8 +22,8 @@ const lng = "-8.833"
 const url = `https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${startTimestamp}&end=${endTimestamp}`;
 
 // Function to make an API call
-async function apiCall() {
-  console.log("apiCall() function called")
+async function getTideTimes() {
+  console.log("getTideTimes() function called")
   try {
       const response = await fetch(
         url, {
@@ -60,4 +60,4 @@ async function handleApiButtonClick() {
   }
 }
 
-module.exports = { handleApiButtonClick };
+module.exports = { getTideTimes };

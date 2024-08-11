@@ -3,6 +3,7 @@
 // run by the browser each time your view template referencing it is loaded
 
 import { displayTideTimesTable } from './displayTideTimesTable.js'; // Adjust the path if necessary
+import { displayErrorMessage } from './displayErrorMessages.js'; // Import the error display function
 
 console.log("client.js is running");
 
@@ -12,6 +13,7 @@ console.log("client.js is running");
 const dataList = document.getElementById("data");             // This is where the data will be output to the DOM
 const clearButton = document.querySelector('#clear-data');
 
+const errorMessage = document.getElementById("error-messages");
 const apiOutput = document.getElementById("api-output");
 const tideTimesButton = document.querySelector('#tide-times-button');
 
@@ -64,11 +66,26 @@ clearButton.addEventListener('click', event => {
     });
 });
 
-// event listener for apiButton
+// Event listener for tideTimesButton
 tideTimesButton.addEventListener('click', event => {
   console.log("API button clicked");
-  fetch("/getTideTimes", {})    //initiates a GET request to the endpoint /getTideTimes 
-  .then(response => {
-    console.log("The tide times data is: " + response);
-  });
+  fetch("/getTideTimes", {})
+    .then(response => {
+      if (response.status === 429) {
+        return response.json().then(data => {
+          displayErrorMessage(data.message); // Display the error message in the DOM
+        });
+      }
+      return response.json(); // Process the response if not an error
+    })
+    .then(data => {
+      if (data) {
+        console.log("The tide times data is: ", data);
+        // Handle the tide times data here if needed
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching tide times:", error);
+      displayErrorMessage("An error occurred while fetching tide times."); // Display a generic error message
+    });
 });
