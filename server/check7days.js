@@ -10,7 +10,7 @@ const db = new sqlite3.Database(dbFile);
 const check7days = async (db) => {
     return new Promise((resolve, reject) => {
         // Query to get all entries from the database
-        db.all("SELECT weatherObject FROM BeachTable ORDER BY time DESC", (err, rows) => {
+        db.all("SELECT * FROM BeachTable ORDER BY time DESC", (err, rows) => {
             if (err) {
                 console.error("Error fetching entries:", err);
                 return reject(err);
@@ -19,9 +19,9 @@ const check7days = async (db) => {
                 return resolve(true); // If there are no entries, we can proceed with the API call
             }
 
-            // Get the last entry's weatherObject
-            const lastEntry = rows[rows.length - 1].weatherObject; // Access the last entry's weatherObject
-            const lastTimestamp = new Date(lastEntry.timestamp).getTime(); // Assuming lastEntry has a timestamp field
+            // Get the last entry's timestamp
+            const lastEntry = rows[rows.length - 1]; // The first entry in the ordered result is the most recent
+            const lastTimestamp = lastEntry.time; // Access the last entry's timestamp directly
             const currentTime = Date.now(); // Current time in milliseconds
             const timeDifference = currentTime - lastTimestamp; // Difference in milliseconds
             const daysDifference = timeDifference / (1000 * 3600 * 24); // Convert to days
