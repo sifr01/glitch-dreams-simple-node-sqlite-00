@@ -70,7 +70,12 @@ db.serialize(() => {
     const exists = await checkTableExists();
     if (!exists) {
       await createTable();
-      await insertDummyData(db, ["{Example data 1}", 1672578061000]);
+      await insertDummyData(db, [`{"data":[{
+                                      "height":0,
+                                      "time":"0000-01-01T00:00:00+00:00",
+                                      "type":"low"
+                                    }]}`, 
+                                  1672578061000]);
     } else {
       console.log('Table "BeachTable" already exists.');
     }
