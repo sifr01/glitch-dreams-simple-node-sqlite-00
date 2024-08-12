@@ -4,7 +4,7 @@
 // init project
 const { getTideTimes } = require('./server/getTideTimes.js');
 const { insertAPIdata } = require('./server/insertAPIdata.js');
-const { check7days } = require('./server/check7days.js');
+const { checkDays } = require('./server/checkDays.js');
 const { insertDummyData } = require('./server/insertDummyData.js'); // Adjust the path as necessary
 
 const express = require("express");
@@ -122,12 +122,12 @@ app.get('/getTideTimes', async (req, res) => {
   console.log('GET request reached the internal server side endpoint');
 
   try {
-    // 1. Check if more than 7 days have passed since the last tide times table entry
-    console.log("Checking if more than 7 days have passed since the last tide times table entry")
-    const canCallAPI = await check7days(db); // Pass the database connection to check7days
-    console.log("using check7days(), has it been more than 7 days since last tide times API call?: " + await check7days(db));
+    // 1. Check if more than x number of days have passed since the last tide times table entry
+    console.log("Checking if more than x number days have passed since the last tide times table entry")
+    const canCallAPI = await checkDays(db); // Pass the database connection to checkDays
+    console.log("using checkDays(), has it been more than x number of days since last tide times API call?: " + await checkDays(db));
     if (!canCallAPI) {
-      return res.status(429).json({ message: "API call not allowed. Last entry was less than 7 days ago." });
+      return res.status(429).json({ message: "API call not allowed. Last entry was less than x number of days ago." });
     }
 
     // 2. Make the API call to get tide times (getTideTimes.js)

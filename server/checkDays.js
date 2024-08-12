@@ -7,7 +7,7 @@ const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
 
 // define function
-const check7days = async (db) => {
+const checkDays = async (db) => {
     return new Promise((resolve, reject) => {
         // Query to get all entries from the database
         db.all("SELECT time FROM BeachTable ORDER BY time ASC", (err, rows) => {
@@ -25,9 +25,9 @@ const check7days = async (db) => {
             const timeDifference = currentTime - lastTimestamp; // Difference in milliseconds
             const daysDifference = timeDifference / (1000 * 3600 * 24); // Convert to days
 
-            resolve(daysDifference > 7); // Return true if more than 7 days have passed
+            resolve(daysDifference > 1); // Return true if more than x number of days have passed
         });
     });
 };
 
-module.exports = { check7days };
+module.exports = { checkDays };
