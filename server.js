@@ -127,7 +127,7 @@ app.get('/getTideTimes', async (req, res) => {
     const canCallAPI = await checkDays(db); // Pass the database connection to checkDays
     console.log("using checkDays(), has it been more than x number of days since last tide times API call?: " + await checkDays(db));
     if (!canCallAPI) {
-      return res.status(429).json({ message: "API call not allowed. Last entry was less than x number of days ago." });
+      return res.status(429).json({ message: "API call not allowed. Last entry was less than 1 day ago." });
     }
 
     // 2. Make the API call to get tide times (getTideTimes.js)
