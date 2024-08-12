@@ -11,7 +11,7 @@ console.log("client.js is running");
 // const dreamsForm = document.forms[0];
 // const dreamInput = dreamsForm.elements["dream"];
 const dataList = document.getElementById("data");             // This is where the data will be output to the DOM
-const clearButton = document.querySelector('#clear-data');
+// const clearButton = document.querySelector('#clear-data');
 
 const errorMessage = document.getElementById("error-messages");
 const apiOutput = document.getElementById("api-output");
@@ -57,14 +57,14 @@ fetch("/getData", {})
 // event listener for clearButton:
   // 1. hits server endpoint which triggers deletion of all entries from table and
   // 2. clears DOM of all API data
-clearButton.addEventListener('click', event => {
-  fetch("/clearDOM", {})        //initiates a GET request to the endpoint /clearDOM 
-    .then(res => res.json())    //promise handler that processes the response from the fetch request. res is the response object returned from the server. The res.json() method is called to read the response body and parse it as JSON. This method also returns a promise that resolves with the result of parsing the body text as JSON.
-    .then(response => {
-      apiOutput.innerHTML = "";
-      console.log("cleared DOM of all API data and deleted all entries from table");
-    });
-});
+// clearButton.addEventListener('click', event => {
+//   fetch("/clearDOM", {})        //initiates a GET request to the endpoint /clearDOM 
+//     .then(res => res.json())    //promise handler that processes the response from the fetch request. res is the response object returned from the server. The res.json() method is called to read the response body and parse it as JSON. This method also returns a promise that resolves with the result of parsing the body text as JSON.
+//     .then(response => {
+//       apiOutput.innerHTML = "";
+//       console.log("cleared DOM of all API data and deleted all entries from table");
+//     });
+// });
 
 // Event listener for tideTimesButton
 tideTimesButton.addEventListener('click', event => {
