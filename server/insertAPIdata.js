@@ -1,7 +1,5 @@
 // insertAPIdata.js
 
-const { currentUnixTimestamp } = require('./currentUnixTimestamp.js');
-
 // init sqlite db
 const dbFile = "./server/.data/sqlite.db";
 // const fs = require("fs");
@@ -15,7 +13,7 @@ async function insertAPIdata(APIdata) {
     const sql = 'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)';
 
     // Get the current Unix timestamp
-    const timestamp = currentUnixTimestamp();
+    const timestamp = Date.now();
 
     return new Promise((resolve, reject) => {
         // Insert the cleansed weatherObject and timestamp into the database

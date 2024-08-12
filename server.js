@@ -3,7 +3,6 @@
 
 // init project
 const { getTideTimes } = require('./server/getTideTimes.js');
-const { currentUnixTimestamp } = require('./server/currentUnixTimestamp.js');
 const { insertAPIdata } = require('./server/insertAPIdata.js');
 const { check7days } = require('./server/check7days.js');
 const { insertDummyData } = require('./server/insertDummyData.js'); // Adjust the path as necessary
@@ -101,7 +100,7 @@ app.post("/addDream", (request, response) => {
   // so they can write to the database
   if (!process.env.DISALLOW_WRITE) {
     const cleansedDream = cleanseString(request.body.weatherObject);
-    db.run(`INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)`, [cleansedDream, currentUnixTimestamp()], error => {
+    db.run(`INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
       if (error) {
         response.send({ message: "error!" });
       } else {
@@ -110,6 +109,8 @@ app.post("/addDream", (request, response) => {
     });
   }
 });
+
+
 
 // Endpoint to insert API data into the SQLite database
 app.get('/getTideTimes', async (req, res) => {
