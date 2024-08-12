@@ -10,7 +10,7 @@ const db = new sqlite3.Database(dbFile);
 const check7days = async (db) => {
     return new Promise((resolve, reject) => {
         // Query to get all entries from the database
-        db.all("SELECT * FROM BeachTable ORDER BY time DESC", (err, rows) => {
+        db.all("SELECT time FROM BeachTable ORDER BY time ASC", (err, rows) => {
             if (err) {
                 console.error("Error fetching entries:", err);
                 return reject(err);
@@ -18,7 +18,6 @@ const check7days = async (db) => {
             if (!rows || rows.length === 0) {
                 return resolve(true); // If there are no entries, we can proceed with the API call
             }
-
             // Get the last entry's timestamp
             const lastEntry = rows[rows.length - 1]; // The first entry in the ordered result is the most recent
             const lastTimestamp = lastEntry.time; // Access the last entry's timestamp directly
