@@ -6,6 +6,7 @@ const { getTideTimes } = require('./server/getTideTimes.js');
 const { currentUnixTimestamp } = require('./server/currentUnixTimestamp.js');
 const { insertAPIdata } = require('./server/insertAPIdata.js');
 const { check7days } = require('./server/check7days.js');
+const { insertDummyData } = require('./server/insertDummyData.js'); // Adjust the path as necessary
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -36,70 +37,49 @@ const db = new sqlite3.Database(dbFile);
 // if ./server/.data/sqlite.db does not exist, create it, otherwise print records to console
 // Check if the database file exists and handle table creation
 db.serialize(() => {
-  if (!exists) {
-    // If the database file does not exist, create it and the table
-    db.run(
-      "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
-      (err) => {
-        if (err) {
-          console.error("Error creating table BeachTable:", err.message);
-        } else {
-          console.log("New table BeachTable created!");
-
-          // Insert dummy data into database for testing purposes
-          db.run(
-            'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
-            [
-              "{Example data 1}", 2100100100100
-            ],
-            (err) => {
-              if (err) {
-                console.error("Error inserting dummy data:", err.message);
-              } else {
-                console.log("Dummy data (1) inserted successfully!");
-              }
-            }
-          );
-        }
-      }
-    );
-  } else {
-    // If the database file exists, check for the table
-    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='BeachTable'", (err, row) => {
-      if (err) {
-        console.error("Error checking for table:", err.message);
-      } else if (!row) {
-        // Table does not exist, create it
-        db.run(
-          "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
-          (err) => {
-            if (err) {
-              console.error("Error creating table BeachTable:", err.message);
-            } else {
-              console.log("New table BeachTable created!");
-              // Insert dummy data into database for testing purposes
-          db.run(
-            'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
-            [
-              "{Example data 2}", 2100100100100
-            ],
-            (err) => {
-              if (err) {
-                console.error("Error inserting dummy data:", err.message);
-              } else {
-                console.log("Dummy data (2) inserted successfully!");
-              }
-            }
-          );
-            }
+  const createTable = () => {
+    return new Promise((resolve, reject) => {
+      db.run(
+        "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
+        (err) => {
+          if (err) {
+            console.error("Error creating table BeachTable:", err.message);
+            reject(err);
+          } else {
+            console.log("New table BeachTable created!");
+            resolve();
           }
-        );
-      } else {
-        console.log('Table "BeachTable" already exists.');
-      }
+        }
+      );
     });
-  }
+  };
+
+  const checkTableExists = () => {
+    return new Promise((resolve, reject) => {
+      db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='BeachTable'", (err, row) => {
+        if (err) {
+          console.error("Error checking for table:", err.message);
+          reject(err);
+        } else {
+          resolve(!!row);
+        }
+      });
+    });
+  };
+
+  const initializeDatabase = async () => {
+    const exists = await checkTableExists();
+    if (!exists) {
+      await createTable();
+      await insertDummyData(db, ["{Example data 1}", 1672578061000]);
+    } else {
+      console.log('Table "BeachTable" already exists.');
+    }
+  };
+
+  initializeDatabase().catch(err => console.error("Initialization error:", err));
 });
+
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
@@ -141,7 +121,7 @@ app.get('/getTideTimes', async (req, res) => {
     const canCallAPI = await check7days(db); // Pass the database connection to check7days
     console.log("using check7days(), has it been more than 7 days since last tide times API call?: " + await check7days(db));
     if (!canCallAPI) {
-        return res.status(429).json({ message: "API call not allowed. Last entry was less than 7 days ago." });
+      return res.status(429).json({ message: "API call not allowed. Last entry was less than 7 days ago." });
     }
 
     // 2. Make the API call to get tide times (getTideTimes.js)
