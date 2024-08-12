@@ -33,7 +33,7 @@ const exists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
 
-// if ./.data/sqlite.db does not exist, create it, otherwise print records to console
+// if ./server/.data/sqlite.db does not exist, create it, otherwise print records to console
 // Check if the database file exists and handle table creation
 db.serialize(() => {
   if (!exists) {
@@ -50,15 +50,13 @@ db.serialize(() => {
           db.run(
             'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
             [
-              "{This is test entry}", 0,
-              "{This is test entry}", 1,
-              "{This is test entry}", 2
+              "{Example data 1}", 2100100100100
             ],
             (err) => {
               if (err) {
                 console.error("Error inserting dummy data:", err.message);
               } else {
-                console.log("Dummy data inserted successfully!");
+                console.log("Dummy data (1) inserted successfully!");
               }
             }
           );
@@ -83,15 +81,13 @@ db.serialize(() => {
           db.run(
             'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?), (?, ?), (?, ?)',
             [
-              "{This is test entry}", 0,
-              "{This is test entry}", 1,
-              "{This is test entry}", 2
+              "{Example data 2}", 2100100100100
             ],
             (err) => {
               if (err) {
                 console.error("Error inserting dummy data:", err.message);
               } else {
-                console.log("Dummy data inserted successfully!");
+                console.log("Dummy data (2) inserted successfully!");
               }
             }
           );
