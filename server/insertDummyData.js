@@ -1,4 +1,4 @@
-// databaseUtils.js
+// insertDummyData.js
 const insertDummyData = (db, tableName, data) => {
     return new Promise((resolve, reject) => {
       db.run(
