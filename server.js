@@ -39,7 +39,7 @@ db.serialize(() => {
   const createTable = () => {
     return new Promise((resolve, reject) => {
       db.run(
-        "CREATE TABLE TideTimes (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
+        "CREATE TABLE TideTimes (id INTEGER PRIMARY KEY AUTOINCREMENT, tideTimesObject TEXT, time INTEGER)",
         (err) => {
           if (err) {
             console.error("Error creating table TideTimes:", err.message);
@@ -90,22 +90,22 @@ app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
 
-// endpoint to get all the weatherObjects in the database
+// endpoint to get all the tideTimesObjects in the database
 app.get("/getData", (request, response) => {
   db.all("SELECT * from TideTimes", (err, rows) => {
     response.send(JSON.stringify(rows));
   });
 });
 
-// endpoint to add a weatherObject to the database
+// endpoint to add a tideTimesObject to the database
 app.post("/addDream", (request, response) => {
-  console.log(`add to weatherObject ${request.body.weatherObject}`);
+  console.log(`add to tideTimesObject ${request.body.tideTimesObject}`);
 
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects
   // so they can write to the database
   if (!process.env.DISALLOW_WRITE) {
-    const cleansedDream = cleanseString(request.body.weatherObject);
-    db.run(`INSERT INTO TideTimes (weatherObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
+    const cleansedDream = cleanseString(request.body.tideTimesObject);
+    db.run(`INSERT INTO TideTimes (tideTimesObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
       if (error) {
         response.send({ message: "error!" });
       } else {
@@ -158,7 +158,7 @@ app.get('/getTideTimes', async (req, res) => {
 
 });
 
-// endpoint to clear weatherObject from the database
+// endpoint to clear tideTimesObject from the database
 app.get("/clearDOM", (request, response) => {
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
   if (!process.env.DISALLOW_WRITE) {

@@ -9,14 +9,14 @@ const db = new sqlite3.Database(dbFile);
 
 // Function to insert API data into SQLite database
 async function insertAPIdata(APIdata) {
-    // Prepare the SQL statement for inserting the weatherObject and timestamp
-    const sql = 'INSERT INTO TideTimes (weatherObject, time) VALUES (?, ?)';
+    // Prepare the SQL statement for inserting the tideTimesObject and timestamp
+    const sql = 'INSERT INTO TideTimes (tideTimesObject, time) VALUES (?, ?)';
 
     // Get the current Unix timestamp
     const timestamp = Date.now();
 
     return new Promise((resolve, reject) => {
-        // Insert the cleansed weatherObject and timestamp into the database
+        // Insert the cleansed tideTimesObject and timestamp into the database
         db.run(sql, [APIdata, timestamp], function(err) {
             if (err) {
                 return reject({ error: err.message }); // Reject the promise with the error
