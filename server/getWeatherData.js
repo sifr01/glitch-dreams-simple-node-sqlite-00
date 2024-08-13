@@ -10,11 +10,11 @@ const apiKey = process.env.API_KEY;
 // set GPS co-ordinates for station name "viana", portugal
 const lat = "41.683"
 const lng = "-8.833"
-const params = 'uvIndex,waveHeight,windSpeed,gust,windDirection,waterTemperature,pressure';
+const params = 'waveHeight,windSpeed,gust,windDirection,waterTemperature,pressure';
 const url = `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}`;
 
 // Function to make an API call
-async function getWeatherData() {
+const getWeatherData = async () => {
   console.log("getWeatherData() function called")
   try {
       const response = await fetch(

@@ -93,15 +93,15 @@ app.post("/addDream", (request, response) => {
 
 
 
-// Endpoint to insert getTideTimes API data into the SQLite database
+// Endpoint for getTideTimes and insertion of API data into the SQLite database
 app.get('/getTideTimes', async (req, res) => {
-  console.log('GET request reached the internal server side endpoint');
+  console.log('GET request reached the internal server side endpoint: getTideTimes');
 
   try {
     // 1. Check if more than x number of days have passed since the last tide times table entry
     const numberOfDays = 1;   // Specify number of days in rate limiting function
     console.log(`Checking if more than ${numberOfDays} number of day(s) have passed since the last tide times table entry`)
-    const canCallAPI = await checkDays(db, numberOfDays); // Pass the database connection to checkDays() along with number of days to check
+    const canCallAPI = await checkDays(db, "TideTimes", numberOfDays); // Pass the database connection to checkDays() along with number of days to check
     console.log(
       `It has been ${canCallAPI.daysDifference} days since last tide times API call. 
       Consequently, will the API call proceed?: ${canCallAPI.canProceed}`);
@@ -133,6 +133,52 @@ app.get('/getTideTimes', async (req, res) => {
   }
 
 });
+
+
+// Endpoint for getWeatherData and insertion of API data into the SQLite database
+app.get('/getWeatherData', async (req, res) => {
+  console.log('GET request reached the internal server side endpoint: getWeatherData');
+
+  try {
+    // 1. Check if more than x number of days have passed since the last weather data table entry
+    const numberOfDays = 1;   // Specify number of days in rate limiting function
+    console.log(`Checking if more than ${numberOfDays} number of day(s) have passed since the weather data table entry`)
+    const canCallAPI = await checkDays(db, "WeatherData", numberOfDays); // Pass the database connection to checkDays() along with number of days to check
+    console.log(
+      `It has been ${canCallAPI.daysDifference} days since last weather data API call. 
+      Consequently, will the API call proceed?: ${canCallAPI.canProceed}`);
+    if (!canCallAPI.canProceed) {
+      return res.status(429).json({ message: `API call not allowed. Last entry was less than ${numberOfDays} day(s) ago.` });
+    }
+
+    // 2. Make the API call to get weather data (getWeatherData.js)
+    const getWeatherData1 = await getWeatherData(); // Await the result of the API call
+    const apiData = JSON.stringify(getWeatherData1)
+    console.log("getWeatherData() returns: " + apiData); // Log the resolved value
+
+    // 3. Cleanse the data (cleanseString())
+    // const cleansedAPIdata = cleanseString(req.body.APIdata);
+    // const apiData = cleanseString(req.body.APIdata);
+
+    // const { username } = req.body; // Assuming you're also inserting the username
+
+    // 4. Insert the APIdata into the database (insertAPIcallData.js)
+    const result = await insertAPIdata(db, "WeatherData", apiData); // Await the insertion result
+    console.log("API data inserted successfully:", result);
+
+    // 5. Send a response back to the client
+    res.status(201).json({ message: "Data inserted successfully", result });
+  } catch (error) {
+    console.error("Error in processing:", error);
+    // 6. Handle the error appropriately
+    res.status(500).json({ error: error.message });
+  }
+
+});
+
+
+
+
 
 // endpoint to clear tideTimesObject from the database
 app.get("/clearDOM", (request, response) => {

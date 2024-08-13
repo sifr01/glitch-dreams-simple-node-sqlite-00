@@ -16,6 +16,7 @@ const dataList = document.getElementById("data");             // This is where t
 const errorMessage = document.getElementById("error-messages");
 const apiOutput = document.getElementById("api-output");
 const tideTimesButton = document.querySelector('#tide-times-button');
+const weatherDataButton = document.querySelector('#weather-data-button');
 
 // request the data from our app's sqlite database
 fetch("/getData", {})
@@ -68,7 +69,7 @@ fetch("/getData", {})
 
 // Event listener for tideTimesButton
 tideTimesButton.addEventListener('click', event => {
-  console.log("API button clicked");
+  console.log("tideTimesButton API button clicked");
   fetch("/getTideTimes", {})
     .then(response => {
       if (response.status === 429) {
@@ -89,3 +90,30 @@ tideTimesButton.addEventListener('click', event => {
       displayErrorMessage("An error occurred while fetching tide times."); // Display a generic error message
     });
 });
+
+// Event listener for weatherDataButton
+weatherDataButton.addEventListener('click', event => {
+  console.log("weatherDataButton API button clicked");
+  fetch("/getWeatherData", {})
+    .then(response => {
+      if (response.status === 429) {
+        return response.json().then(data => {
+          displayErrorMessage(data.message); // Display the error message in the DOM
+        });
+      }
+      return response.json(); // Process the response if not an error
+    })
+    .then(data => {
+      if (data) {
+        console.log("The Weather data is: ", data);
+        // Handle the weather data here if needed
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching weather data:", error);
+      displayErrorMessage("An error occurred while fetching weather data."); // Display a generic error message
+    });
+});
+
+
+
