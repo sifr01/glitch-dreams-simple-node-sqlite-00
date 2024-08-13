@@ -81,7 +81,7 @@ tideTimesButton.addEventListener('click', event => {
     })
     .then(data => {
       if (data) {
-        console.log("The tide times data is: ", data);
+        console.log("The getTideTimes endpoint response message is: ", data);
         // Handle the tide times data here if needed
       }
     })
@@ -105,7 +105,7 @@ weatherDataButton.addEventListener('click', event => {
     })
     .then(data => {
       if (data) {
-        console.log("The Weather data is: ", data);
+        console.log("The getWeatherData endpoint response message is: ", data);
         // Handle the weather data here if needed
       }
     })
