@@ -3,8 +3,8 @@
 // Function to create and display a tide times table
 export const displayTideTimesTable = (tideTimesObject, containerId) => {
     // Parse the tideTimesObject to get the data
-    const weatherData = JSON.parse(tideTimesObject);
-    const data = weatherData.data;
+    console.log(`tideTimesObject as received by displayTideTimesTable: ${JSON.stringify(tideTimesObject)}`);
+    const data = tideTimesObject;
   
     // Create a table element
     const table = document.createElement("table");

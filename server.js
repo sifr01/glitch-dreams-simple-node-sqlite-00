@@ -44,12 +44,7 @@ db.serialize(() => {
     const exists = await checkTableExists(db, tableName);
     if (!exists) {
       await createTable(db, tableName);
-      await insertDummyData(db, tableName, [`{"data":[{
-                                      "height":0,
-                                      "time":"0000-01-01T00:00:00+00:00",
-                                      "type":"low"
-                                    }]}`, 
-                                  1672578061000]);
+      await insertDummyData(db, tableName, [`{"data":[{"height":0,"time":"0000-01-01T00:00:00+00:00","type":"low"}]}`, 1672578061000]);
     } else {
       console.log(`Table ${tableName} already exists.`);
     }
@@ -66,12 +61,37 @@ app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
 
-// endpoint to get all the tideTimesObjects in the database
+// define getData endpoint
 app.get("/getData", (request, response) => {
-  db.all("SELECT * from TideTimes", (err, rows) => {
-    response.send(JSON.stringify(rows));
-  });
+  console.log("getData internal server endpoint received get request");
+  db.all("SELECT TideTimesObject FROM TideTimes WHERE time = (SELECT MAX(time) FROM TideTimes);", 
+    (err, rows) => { // Change 'string' to 'rows' to reflect that it's an array of objects
+      if (err) {
+        console.error("Database error:", err);
+        return response.status(500).json({ error: "Database error" });
+      }
+      
+      // Check if rows is not empty
+      if (rows.length === 0) {
+        return response.status(404).json({ error: "No data found" });
+      }
+
+      // Assuming you want the last entry
+      const tideTimesObjectString = rows[0].TideTimesObject; // Access the first row's TideTimesObject
+      console.log(`TideTimesObject string: ${tideTimesObjectString}`);
+      
+
+      try {
+        const tideTimesObject = JSON.parse(tideTimesObjectString); // Parse the JSON string
+        console.log(`tideTimesObject: ${tideTimesObject}`);
+        response.json(tideTimesObject); // Send the parsed JSON
+      } catch (parseError) {
+        console.error("JSON parsing error:", parseError);
+        response.status(500).json({ error: "Invalid JSON format" });
+      }
+    });
 });
+
 
 // // endpoint to add a tideTimesObject to the database
 // app.post("/addDream", (request, response) => {

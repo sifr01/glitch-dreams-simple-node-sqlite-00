@@ -2,32 +2,21 @@
 // client-side js
 // run by the browser each time your view template referencing it is loaded
 
-import { displayTideTimesTable } from './displayTideTimesTable.js'; // Adjust the path if necessary
+import { displayTideTimesTable } from './displayTideTimesTable.js';
+// import { displayWeatherAndSolar } from './displayWeatherAndSolar.js';
 import { displayErrorMessage } from './displayErrorMessages.js'; // Import the error display function
 
 console.log("client.js is running");
 
 // define variables that reference elements on our page
-// const dreamsForm = document.forms[0];
-// const dreamInput = dreamsForm.elements["dream"];
-const dataList = document.getElementById("data");             // This is where the data will be output to the DOM
+
 // const clearButton = document.querySelector('#clear-data');
-
 const errorMessage = document.getElementById("error-messages");
-const apiOutput = document.getElementById("api-output");
 const tideTimesButton = document.querySelector('#tide-times-button');
+// This is where the tide times table will be output to the DOM
+const tideTimesTable = document.getElementById("tide-times-table");
 const weatherDataButton = document.querySelector('#weather-data-button');
-
-// request the data from our app's sqlite database
-fetch("/getData", {})
-  .then(res => res.json())
-  .then(response => {
-    // Assuming response is an array and we want the last entry
-    const lastEntry = response[response.length - 1].TideTimesObject;
-
-    // Call the function to append the last entry data to the DOM
-    displayTideTimesTable(lastEntry, 'dataList'); // Pass the container ID
-  });
+const dbQuery = document.querySelector('#DB-query');
 
 // const dreams = [];
 // // listen for the form to be submitted and add a new dream when it is
@@ -56,8 +45,8 @@ fetch("/getData", {})
 // };
 
 // event listener for clearButton:
-  // 1. hits server endpoint which triggers deletion of all entries from table and
-  // 2. clears DOM of all API data
+// 1. hits server endpoint which triggers deletion of all entries from table and
+// 2. clears DOM of all API data
 // clearButton.addEventListener('click', event => {
 //   fetch("/clearDOM", {})        //initiates a GET request to the endpoint /clearDOM 
 //     .then(res => res.json())    //promise handler that processes the response from the fetch request. res is the response object returned from the server. The res.json() method is called to read the response body and parse it as JSON. This method also returns a promise that resolves with the result of parsing the body text as JSON.
@@ -115,5 +104,38 @@ weatherDataButton.addEventListener('click', event => {
     });
 });
 
+// Event listener for database query (SELECT)
+dbQuery.addEventListener('click', event => {
+  console.log("dbQuery button clicked");
+
+  fetch("/getData")
+    .then(response => {
+      console.log("Response received:", response);
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json(); // Parse the JSON from the response
+    })
+    .then(data => {
+      console.log("Data received:", data.data);
+      displayTideTimesTable(data.data, 'dataList');
+      // displayWeatherAndSolar(data); // Call a function to display the data
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
+});
 
 
+// // request the data from our app's sqlite database
+// fetch("/getData", {})
+//   .then(res => res.json())
+//   .then(response => {
+//     // Assuming response is an array and we want the last entry
+//     const lastEntry = response[response.length - 1];
+
+//     // Call the function to append the last entry data to the DOM
+//     displayTideTimesTable(lastEntry, tideTimesTable); // Pass the container ID
+//     displayWeatherAndSolar(lastEntry, 'dataList'); // Pass the container ID
+
+//   });
