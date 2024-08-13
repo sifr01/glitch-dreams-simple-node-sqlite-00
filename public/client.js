@@ -22,7 +22,7 @@ fetch("/getData", {})
   .then(res => res.json())
   .then(response => {
     // Assuming response is an array and we want the last entry
-    const lastEntry = response[response.length - 1].tideTimesObject;
+    const lastEntry = response[response.length - 1].TideTimesObject;
 
     // Call the function to append the last entry data to the DOM
     displayTideTimesTable(lastEntry, 'dataList'); // Pass the container ID

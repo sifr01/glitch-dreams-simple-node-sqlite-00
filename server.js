@@ -3,6 +3,7 @@
 
 // init project
 const { getTideTimes } = require('./server/getTideTimes.js');
+const { getWeatherData } = require('./server/getWeatherData.js');
 const { insertAPIdata } = require('./server/insertAPIdata.js');
 const { checkDays } = require('./server/checkDays.js');
 const { insertDummyData } = require('./server/insertDummyData.js');
@@ -92,7 +93,7 @@ app.post("/addDream", (request, response) => {
 
 
 
-// Endpoint to insert API data into the SQLite database
+// Endpoint to insert getTideTimes API data into the SQLite database
 app.get('/getTideTimes', async (req, res) => {
   console.log('GET request reached the internal server side endpoint');
 
@@ -120,8 +121,8 @@ app.get('/getTideTimes', async (req, res) => {
     // const { username } = req.body; // Assuming you're also inserting the username
 
     // 4. Insert the APIdata into the database (insertAPIcallData.js)
-    const result = await insertAPIdata(apiData); // Await the insertion result
-    console.log("Data inserted successfully:", result);
+    const result = await insertAPIdata(db, "TideTimes", apiData); // Await the insertion result
+    console.log("API data inserted successfully:", result);
 
     // 5. Send a response back to the client
     res.status(201).json({ message: "Data inserted successfully", result });
