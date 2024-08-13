@@ -9,21 +9,17 @@
 // define function
 const checkDays = async (db, numberOfDays) => {
     return new Promise((resolve, reject) => {
-        // Query to get all entries from the database
-        db.all("SELECT time FROM BeachTable ORDER BY time ASC", (err, rows) => {
+        // Query to get the most recent timestamp from the table
+        db.all("SELECT MAX(time) AS timeStamp FROM BeachTable;", (err, rows) => {
             if (err) {
                 console.error("Error fetching entries:", err);
                 return reject(err);
             }
             if (!rows || rows.length === 0) {
-                return resolve(true); // If there are no entries, we can proceed with the API call
+                return resolve(true); // If there are no entries in the table, we can proceed with the API call
             }
-            // Get the last entry's timestamp
-            const lastEntry = rows[rows.length - 1]; // The first entry in the ordered result is the most recent
-            const lastTimestamp = lastEntry.time; // Access the last entry's timestamp directly
-            const currentTime = Date.now(); // Current time in milliseconds
-            const timeDifference = currentTime - lastTimestamp; // Difference in milliseconds
-            const daysDifference = timeDifference / (1000 * 3600 * 24); // Convert to days
+            const timeDifference = Date.now() - rows[0].timeStamp; // Difference between current time and the most recent timeStamp in the table
+            const daysDifference = timeDifference / (1000 * 3600 * 24); // Convert difference from milliseconds to days
 
             resolve(daysDifference > numberOfDays); // Return true if more than x number of days have passed
         });
