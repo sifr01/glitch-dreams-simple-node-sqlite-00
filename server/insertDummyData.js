@@ -2,7 +2,7 @@
 const insertDummyData = (db, data) => {
     return new Promise((resolve, reject) => {
       db.run(
-        'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)',
+        'INSERT INTO TideTimes (weatherObject, time) VALUES (?, ?)',
         data,
         (err) => {
           if (err) {

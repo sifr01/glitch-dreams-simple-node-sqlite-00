@@ -5,7 +5,7 @@
 const checkDays = async (db, numberOfDays) => {
     return new Promise((resolve, reject) => {
         // Query to get the most recent timestamp from the table
-        db.all("SELECT MAX(time) AS timeStamp FROM BeachTable;", (err, rows) => {
+        db.all("SELECT MAX(time) AS timeStamp FROM TideTimes;", (err, rows) => {
             if (err) {
                 console.error("Error fetching entries:", err);
                 return reject(err);

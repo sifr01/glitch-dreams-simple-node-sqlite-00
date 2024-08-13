@@ -10,7 +10,7 @@ const db = new sqlite3.Database(dbFile);
 // Function to insert API data into SQLite database
 async function insertAPIdata(APIdata) {
     // Prepare the SQL statement for inserting the weatherObject and timestamp
-    const sql = 'INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)';
+    const sql = 'INSERT INTO TideTimes (weatherObject, time) VALUES (?, ?)';
 
     // Get the current Unix timestamp
     const timestamp = Date.now();

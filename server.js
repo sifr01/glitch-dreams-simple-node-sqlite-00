@@ -39,13 +39,13 @@ db.serialize(() => {
   const createTable = () => {
     return new Promise((resolve, reject) => {
       db.run(
-        "CREATE TABLE BeachTable (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
+        "CREATE TABLE TideTimes (id INTEGER PRIMARY KEY AUTOINCREMENT, weatherObject TEXT, time INTEGER)",
         (err) => {
           if (err) {
-            console.error("Error creating table BeachTable:", err.message);
+            console.error("Error creating table TideTimes:", err.message);
             reject(err);
           } else {
-            console.log("New table BeachTable created!");
+            console.log("New table TideTimes created!");
             resolve();
           }
         }
@@ -55,7 +55,7 @@ db.serialize(() => {
 
   const checkTableExists = () => {
     return new Promise((resolve, reject) => {
-      db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='BeachTable'", (err, row) => {
+      db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='TideTimes'", (err, row) => {
         if (err) {
           console.error("Error checking for table:", err.message);
           reject(err);
@@ -77,7 +77,7 @@ db.serialize(() => {
                                     }]}`, 
                                   1672578061000]);
     } else {
-      console.log('Table "BeachTable" already exists.');
+      console.log('Table "TideTimes" already exists.');
     }
   };
 
@@ -92,7 +92,7 @@ app.get("/", (request, response) => {
 
 // endpoint to get all the weatherObjects in the database
 app.get("/getData", (request, response) => {
-  db.all("SELECT * from BeachTable", (err, rows) => {
+  db.all("SELECT * from TideTimes", (err, rows) => {
     response.send(JSON.stringify(rows));
   });
 });
@@ -105,7 +105,7 @@ app.post("/addDream", (request, response) => {
   // so they can write to the database
   if (!process.env.DISALLOW_WRITE) {
     const cleansedDream = cleanseString(request.body.weatherObject);
-    db.run(`INSERT INTO BeachTable (weatherObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
+    db.run(`INSERT INTO TideTimes (weatherObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
       if (error) {
         response.send({ message: "error!" });
       } else {
@@ -163,10 +163,10 @@ app.get("/clearDOM", (request, response) => {
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
   if (!process.env.DISALLOW_WRITE) {
     db.each(
-      "SELECT * from BeachTable",
+      "SELECT * from TideTimes",
       (err, row) => {
         console.log("row", row);
-        db.run(`DELETE FROM BeachTable WHERE ID=?`, row.id, error => {
+        db.run(`DELETE FROM TideTimes WHERE ID=?`, row.id, error => {
           if (row) {
             console.log(`deleted row ${row.id}`);
           }
