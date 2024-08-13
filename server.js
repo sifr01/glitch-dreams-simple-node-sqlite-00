@@ -5,7 +5,9 @@
 const { getTideTimes } = require('./server/getTideTimes.js');
 const { insertAPIdata } = require('./server/insertAPIdata.js');
 const { checkDays } = require('./server/checkDays.js');
-const { insertDummyData } = require('./server/insertDummyData.js'); // Adjust the path as necessary
+const { insertDummyData } = require('./server/insertDummyData.js');
+const { createTable } = require('./server/createTable.js');
+const { checkTableExists } = require('./server/checkTableExists.js');
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -36,52 +38,25 @@ const db = new sqlite3.Database(dbFile);
 // if ./server/.data/sqlite.db does not exist, create it, otherwise print records to console
 // Check if the database file exists and handle table creation
 db.serialize(() => {
-  const createTable = () => {
-    return new Promise((resolve, reject) => {
-      db.run(
-        "CREATE TABLE TideTimes (id INTEGER PRIMARY KEY AUTOINCREMENT, tideTimesObject TEXT, time INTEGER)",
-        (err) => {
-          if (err) {
-            console.error("Error creating table TideTimes:", err.message);
-            reject(err);
-          } else {
-            console.log("New table TideTimes created!");
-            resolve();
-          }
-        }
-      );
-    });
-  };
 
-  const checkTableExists = () => {
-    return new Promise((resolve, reject) => {
-      db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='TideTimes'", (err, row) => {
-        if (err) {
-          console.error("Error checking for table:", err.message);
-          reject(err);
-        } else {
-          resolve(!!row);
-        }
-      });
-    });
-  };
-
-  const initializeDatabase = async () => {
-    const exists = await checkTableExists();
+  const initializeDatabase = async (tableName) => {
+    const exists = await checkTableExists(db, tableName);
     if (!exists) {
-      await createTable();
-      await insertDummyData(db, [`{"data":[{
+      await createTable(db, tableName);
+      await insertDummyData(db, tableName, [`{"data":[{
                                       "height":0,
                                       "time":"0000-01-01T00:00:00+00:00",
                                       "type":"low"
                                     }]}`, 
                                   1672578061000]);
     } else {
-      console.log('Table "TideTimes" already exists.');
+      console.log(`Table ${tableName} already exists.`);
     }
   };
+  
 
-  initializeDatabase().catch(err => console.error("Initialization error:", err));
+  initializeDatabase("TideTimes").catch(err => console.error("Initialization error:", err));
+  initializeDatabase("WeatherData").catch(err => console.error("Initialization error:", err));
 });
 
 

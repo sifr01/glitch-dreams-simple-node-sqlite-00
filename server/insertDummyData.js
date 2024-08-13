@@ -1,15 +1,15 @@
 // databaseUtils.js
-const insertDummyData = (db, data) => {
+const insertDummyData = (db, tableName, data) => {
     return new Promise((resolve, reject) => {
       db.run(
-        'INSERT INTO TideTimes (tideTimesObject, time) VALUES (?, ?)',
+        `INSERT INTO ${tableName} (${tableName}Object, time) VALUES (?, ?)`,
         data,
         (err) => {
           if (err) {
-            console.error("Error inserting dummy data:", err.message);
+            console.error(`Error inserting dummy data into table ${tableName}:`, err.message);
             reject(err);
           } else {
-            console.log("Dummy data inserted successfully!");
+            console.log(`Dummy data inserted successfully into table ${tableName}!`);
             resolve();
           }
         }
