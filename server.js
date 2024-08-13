@@ -123,9 +123,10 @@ app.get('/getTideTimes', async (req, res) => {
 
   try {
     // 1. Check if more than x number of days have passed since the last tide times table entry
+    const numberOfDays = 1;
     console.log("Checking if more than x number days have passed since the last tide times table entry")
-    const canCallAPI = await checkDays(db); // Pass the database connection to checkDays
-    console.log("using checkDays(), has it been more than x number of days since last tide times API call?: " + await checkDays(db));
+    const canCallAPI = await checkDays(db, numberOfDays); // Pass the database connection to checkDays() along with number of days to check
+    console.log(`Using checkDays(), has it been more than ${numberOfDays} number of days since last tide times API call?: ` + await checkDays(db, numberOfDays));
     if (!canCallAPI) {
       return res.status(429).json({ message: "API call not allowed. Last entry was less than 1 day ago." });
     }

@@ -1,13 +1,13 @@
-// check7days.js
+// checkDays.js
 // API call rate limiting function
 
 // init sqlite db
-const dbFile = "./server/.data/sqlite.db";
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database(dbFile);
+// const dbFile = "./server/.data/sqlite.db";
+// const sqlite3 = require("sqlite3").verbose();
+// const db = new sqlite3.Database(dbFile);
 
 // define function
-const checkDays = async (db) => {
+const checkDays = async (db, numberOfDays) => {
     return new Promise((resolve, reject) => {
         // Query to get all entries from the database
         db.all("SELECT time FROM BeachTable ORDER BY time ASC", (err, rows) => {
@@ -25,7 +25,7 @@ const checkDays = async (db) => {
             const timeDifference = currentTime - lastTimestamp; // Difference in milliseconds
             const daysDifference = timeDifference / (1000 * 3600 * 24); // Convert to days
 
-            resolve(daysDifference > 1); // Return true if more than x number of days have passed
+            resolve(daysDifference > numberOfDays); // Return true if more than x number of days have passed
         });
     });
 };
