@@ -55,9 +55,9 @@ db.serialize(() => {
     }
   };
   
-
   initializeDatabase("TideTimes").catch(err => console.error("Initialization error:", err));
   initializeDatabase("WeatherData").catch(err => console.error("Initialization error:", err));
+  initializeDatabase("SolarData").catch(err => console.error("Initialization error:", err));
 });
 
 
@@ -73,23 +73,23 @@ app.get("/getData", (request, response) => {
   });
 });
 
-// endpoint to add a tideTimesObject to the database
-app.post("/addDream", (request, response) => {
-  console.log(`add to tideTimesObject ${request.body.tideTimesObject}`);
+// // endpoint to add a tideTimesObject to the database
+// app.post("/addDream", (request, response) => {
+//   console.log(`add to tideTimesObject ${request.body.tideTimesObject}`);
 
-  // DISALLOW_WRITE is an ENV variable that gets reset for new projects
-  // so they can write to the database
-  if (!process.env.DISALLOW_WRITE) {
-    const cleansedDream = cleanseString(request.body.tideTimesObject);
-    db.run(`INSERT INTO TideTimes (tideTimesObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
-      if (error) {
-        response.send({ message: "error!" });
-      } else {
-        response.send({ message: "success" });
-      }
-    });
-  }
-});
+//   // DISALLOW_WRITE is an ENV variable that gets reset for new projects
+//   // so they can write to the database
+//   if (!process.env.DISALLOW_WRITE) {
+//     const cleansedDream = cleanseString(request.body.tideTimesObject);
+//     db.run(`INSERT INTO TideTimes (tideTimesObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
+//       if (error) {
+//         response.send({ message: "error!" });
+//       } else {
+//         response.send({ message: "success" });
+//       }
+//     });
+//   }
+// });
 
 
 
@@ -152,9 +152,12 @@ app.get('/getWeatherData', async (req, res) => {
     }
 
     // 2. Make the API call to get weather data (getWeatherData.js)
-    const getWeatherData1 = await getWeatherData(); // Await the result of the API call
-    const apiData = JSON.stringify(getWeatherData1)
-    console.log("getWeatherData() returns: " + apiData); // Log the resolved value
+    const getResponse = await getWeatherData(); // Await the result of the API call
+    const theWeatherData = JSON.stringify(getResponse.weatherData);
+    const theSolarData = JSON.stringify(getResponse.solarData);
+    
+    console.log("weather data returns: " + theWeatherData); // Log the resolved value
+    console.log("solar data returns: " + theSolarData); // Log the resolved value
 
     // 3. Cleanse the data (cleanseString())
     // const cleansedAPIdata = cleanseString(req.body.APIdata);
@@ -162,12 +165,15 @@ app.get('/getWeatherData', async (req, res) => {
 
     // const { username } = req.body; // Assuming you're also inserting the username
 
-    // 4. Insert the APIdata into the database (insertAPIcallData.js)
-    const result = await insertAPIdata(db, "WeatherData", apiData); // Await the insertion result
-    console.log("API data inserted successfully:", result);
+    // 4.1 Insert the weather APIdata into the database (insertAPIcallData.js)
+    const weatherDataInsertionResult = await insertAPIdata(db, "WeatherData", theWeatherData); // Await the insertion result
+    console.log("weather API data inserted successfully:", weatherDataInsertionResult);
+    // 4.2 Insert the weather APIdata into the database (insertAPIcallData.js)
+    const solarDataInsertionResult = await insertAPIdata(db, "SolarData", theSolarData); // Await the insertion result
+    console.log("weather API data inserted successfully:", solarDataInsertionResult);
 
     // 5. Send a response back to the client
-    res.status(201).json({ message: "Data inserted successfully", result });
+    res.status(201).json({ message: "Data inserted successfully", weatherDataInsertionResult, solarDataInsertionResult });
   } catch (error) {
     console.error("Error in processing:", error);
     // 6. Handle the error appropriately

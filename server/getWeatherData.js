@@ -1,36 +1,60 @@
 // getWeatherData.js
 
-// Import node-fetch to make it compatible with Glitch (you will also need to run: npm install node-fetch@2 )
+// Import node-fetch to make it compatible with Glitch (you will also need to run: npm install node-fetch@2)
 const fetch = require("node-fetch");
 
-// imports and declaration for .env file (API key credentials)
+// Imports and declaration for .env file (API key credentials)
 require('dotenv').config();
 const apiKey = process.env.API_KEY;
 
-// set GPS co-ordinates for station name "viana", portugal
-const lat = "41.683"
-const lng = "-8.833"
-const params = 'waveHeight,windSpeed,gust,windDirection,waterTemperature,pressure';
-const url = `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}`;
+// Set GPS coordinates for station name "viana", Portugal
+const lat = "41.683";
+const lng = "-8.833";
+const paramsWeather = 'waveHeight,windSpeed,gust,windDirection,waterTemperature,pressure';
+const paramsSolar = 'uvIndex';
 
-// Function to make an API call
+// Define the URLs for the two API calls
+const urlWeather = `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${paramsWeather}`;
+const urlSolar = `https://api.stormglass.io/v2/solar/point?lat=${lat}&lng=${lng}&params=${paramsSolar}`;
+
+// Function to make API calls
 const getWeatherData = async () => {
-  console.log("getWeatherData() function called")
+  console.log("getWeatherData() function called");
   try {
-      const response = await fetch(
-        url, {
+    // Make both fetch requests concurrently
+    const [responseWeather, responseSolar] = await Promise.all([
+      fetch(urlWeather, {
         headers: {
-            'Authorization': apiKey     // Replace with your actual API key
-          }
-        });
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
+          'Authorization': apiKey // Replace with your actual API key
+        }
+      }),
+      fetch(urlSolar, {
+        headers: {
+          'Authorization': apiKey // Replace with your actual API key
+        }
+      })
+    ]);
+
+    // Check if both responses are OK
+    if (!responseWeather.ok) {
+      throw new Error(`HTTP error! status: ${responseWeather.status}`);
+    }
+    if (!responseSolar.ok) {
+      throw new Error(`HTTP error! status: ${responseSolar.status}`);
+    }
+
+    // Parse the JSON data from both responses
+    const weatherData = await responseWeather.json();
+    const solarData = await responseSolar.json();
+
+    // Return the combined data in an object
+    return {
+      weatherData: weatherData,
+      solarData: solarData
+    };
   } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error; // Rethrow the error for further handling if needed
+    console.error("Error fetching data:", error);
+    throw error; // Rethrow the error for further handling if needed
   }
 }
 
