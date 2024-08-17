@@ -31,6 +31,12 @@ html, body {
 body {
   display: flex;            /* Use flexbox for layout */
   flex-direction: column;   /* Stack children vertically */
+  
+  /* add selectors to avoid writing to DOM where glitch icon is: */
+  margin: 0; /* Remove default margin */
+  padding-top: 40px; /* Add padding to the top to avoid overlap */
+  padding-right: 40px; /* Add padding to the right to avoid overlap */
+  position: relative; /* Ensure positioning context */
 }
 
 main {
@@ -38,7 +44,29 @@ main {
   padding: 20px;          /* Optional: Add some padding to the main content */
 }
 
-/* * {
+button {
+  font-size: 16px;
+  border-radius: 3px;
+  background-color: lightgrey;
+  border: 1px solid grey;
+  box-shadow: 2px 2px teal;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: yellow;
+}
+
+button:active {
+  box-shadow: none;
+}
+
+
+
+/* ================= */
+
+/* 
+* {
   box-sizing: border-box;
 }
 
@@ -80,24 +108,7 @@ input {
   font-size: 16px;
 }
 
-button {
-  font-size: 16px;
-  border-radius: 3px;
-  background-color: lightgrey;
-  border: 1px solid grey;
-  box-shadow: 2px 2px teal;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: yellow;
-}
-
-button:active {
-  box-shadow: none;
-}
-
 li {
   margin-bottom: 5px;
-}
- */
+} */
+
