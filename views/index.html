@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A cool thing made with Glitch">
 
-    <title>Welcome to Glitch!</title>
+    <title>Tide & Weather Guide</title>
 
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <!-- import the webpage's stylesheet -->
@@ -20,14 +20,17 @@
   <body>
     <header>
       <h1>
-        Beach environmental data
+        Tide & Weather Guide
       </h1>
+      <h3>
+        for the sea side
+      </h3>
     </header>
 
     <main>
       <p class="bold">Oh hi,</p>
       
-      <p>If you're going to the beach, here is the environmental data for co-ordinates: 41.683, -8.833, Viana do Castelo, Portugal</p>
+      <p>If you're going to the beach, here is the tide and weather info for co-ordinates: 41.683, -8.833, Viana do Castelo, Portugal</p>
       
       <!-- <form>
         <input name="dream" aria-label="a new dream" type="text" maxlength="100" placeholder="Dreams!">
@@ -60,6 +63,8 @@
     </main>
 
     <footer>
+      This app makes API calls to stormglass.io to retrieve data
+      It's hosting cleverly stays free by rate limiting API calls to less than 10 days and stores the retrieved data in an sqlite3 database
       Made with <a href="https://glitch.com">Glitch</a>!
     </footer>
 
