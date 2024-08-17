@@ -3,9 +3,18 @@
 // Function to create and display a tide times table
 export const displayTideTimesTable = (tideTimesObject, containerId) => {
     // Parse the tideTimesObject to get the data
-    console.log(`tideTimesObject as received by displayTideTimesTable: ${JSON.stringify(tideTimesObject)}`);
+    // console.log(`tideTimesObject as received by displayTideTimesTable: ${JSON.stringify(tideTimesObject)}`);
     const data = tideTimesObject;
   
+    // Get the container to append the table
+    const container = document.getElementById(containerId);
+    container.innerHTML = ""; // Clear previous entries
+
+    // Create and append the h1 element
+    const h1 = document.createElement("h1");
+    h1.innerText = "Tide Times";
+    container.appendChild(h1);
+
     // Create a table element
     const table = document.createElement("table");
     table.border = "1"; // Optional: Add border to the table
@@ -20,7 +29,6 @@ export const displayTideTimesTable = (tideTimesObject, containerId) => {
     });
     table.appendChild(headerRow);
   
-   
   // Function to format the date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -54,7 +62,5 @@ export const displayTideTimesTable = (tideTimesObject, containerId) => {
   });
   
     // Append the table to the specified container
-    const dataList = document.getElementById(containerId);
-    dataList.innerHTML = ""; // Clear previous entries
-    dataList.appendChild(table);
+    container.appendChild(table);
   };

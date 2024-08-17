@@ -3,7 +3,7 @@
 // run by the browser each time your view template referencing it is loaded
 
 import { displayTideTimesTable } from './displayTideTimesTable.js';
-// import { displayWeatherAndSolar } from './displayWeatherAndSolar.js';
+import { displayWeatherAndSolar } from './displayWeatherAndSolar.js';
 import { displayErrorMessage } from './displayErrorMessages.js'; // Import the error display function
 
 console.log("client.js is running");
@@ -13,10 +13,11 @@ console.log("client.js is running");
 // const clearButton = document.querySelector('#clear-data');
 const errorMessage = document.getElementById("error-messages");
 const tideTimesButton = document.querySelector('#tide-times-button');
+const weatherDataButton = document.querySelector('#weather-data-button');
 // This is where the tide times table will be output to the DOM
 const tideTimesTable = document.getElementById("tide-times-table");
-const weatherDataButton = document.querySelector('#weather-data-button');
-const dbQuery = document.querySelector('#DB-query');
+const tideTimesDBquery = document.querySelector('#tide-times-DB-query');
+const weatherDBquery = document.querySelector('#weather-DB-query');
 
 // const dreams = [];
 // // listen for the form to be submitted and add a new dream when it is
@@ -104,11 +105,11 @@ weatherDataButton.addEventListener('click', event => {
     });
 });
 
-// Event listener for database query (SELECT)
-dbQuery.addEventListener('click', event => {
-  console.log("dbQuery button clicked");
+// Event listener for tide times database query (SELECT)
+tideTimesDBquery.addEventListener('click', event => {
+  console.log("tideTimesDBquery button clicked");
 
-  fetch("/getData")
+  fetch("/tideTimesDBquery")
     .then(response => {
       console.log("Response received:", response);
       if (!response.ok) {
@@ -117,8 +118,8 @@ dbQuery.addEventListener('click', event => {
       return response.json(); // Parse the JSON from the response
     })
     .then(data => {
-      console.log("Data received:", data.data);
-      displayTideTimesTable(data.data, 'dataList');
+      console.log("Tide times data received:", data.data);
+      displayTideTimesTable(data.data, 'tide-times-table');
       // displayWeatherAndSolar(data); // Call a function to display the data
     })
     .catch(error => {
@@ -126,16 +127,36 @@ dbQuery.addEventListener('click', event => {
     });
 });
 
+// Event listener for weather data database query (SELECT)
+weatherDBquery.addEventListener('click', event => {
+  console.log("weather-data-DB-query button clicked");
 
-// // request the data from our app's sqlite database
-// fetch("/getData", {})
-//   .then(res => res.json())
-//   .then(response => {
-//     // Assuming response is an array and we want the last entry
-//     const lastEntry = response[response.length - 1];
+  fetch("/weatherDBquery")
+    .then(response => {
+      console.log("Response received:", response);
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json(); // Parse the JSON from the response
+    })
+    .then(data => {
+      console.log("Weather data received:", data);
+      displayWeatherAndSolar(data, 'weather-solar-output');
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
+});
 
-//     // Call the function to append the last entry data to the DOM
-//     displayTideTimesTable(lastEntry, tideTimesTable); // Pass the container ID
-//     displayWeatherAndSolar(lastEntry, 'dataList'); // Pass the container ID
 
-//   });
+// request the data from our app's sqlite database
+fetch("/tideTimesDBquery", {})
+  .then(res => res.json())
+  .then(response => {
+    // Assuming response is an array and we want the last entry
+    const lastEntry = response[response.length - 1];
+
+    // Call the function to append the last entry data to the DOM
+    displayTideTimesTable(lastEntry, tideTimesTable); // Pass the container ID
+    displayWeatherAndSolar(lastEntry, 'dataList'); // Pass the container ID
+  });

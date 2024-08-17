@@ -61,9 +61,9 @@ app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
 
-// define getData endpoint
-app.get("/getData", (request, response) => {
-  console.log("getData internal server endpoint received get request");
+// define tideTimesDBquery endpoint
+app.get("/tideTimesDBquery", (request, response) => {
+  console.log("tideTimesDBquery internal server endpoint received get request");
   db.all("SELECT TideTimesObject FROM TideTimes WHERE time = (SELECT MAX(time) FROM TideTimes);", 
     (err, rows) => { // Change 'string' to 'rows' to reflect that it's an array of objects
       if (err) {
@@ -85,6 +85,36 @@ app.get("/getData", (request, response) => {
         const tideTimesObject = JSON.parse(tideTimesObjectString); // Parse the JSON string
         console.log(`tideTimesObject: ${tideTimesObject}`);
         response.json(tideTimesObject); // Send the parsed JSON
+      } catch (parseError) {
+        console.error("JSON parsing error:", parseError);
+        response.status(500).json({ error: "Invalid JSON format" });
+      }
+    });
+});
+
+// define weatherDBquery endpoint
+app.get("/weatherDBquery", (request, response) => {
+  console.log("weatherDBquery internal server endpoint received get request");
+  db.all("SELECT WeatherDataObject FROM WeatherData WHERE time = (SELECT MAX(time) FROM WeatherData);",
+    (err, rows) => { // Change 'string' to 'rows' to reflect that it's an array of objects
+      if (err) {
+        console.error("Database error:", err);
+        return response.status(500).json({ error: "Database error" });
+      }
+      
+      // Check if rows is not empty
+      if (rows.length === 0) {
+        return response.status(404).json({ error: "No data found" });
+      }
+
+      // Assuming you want the last entry
+      const weatherDataObjectString = rows[0].WeatherDataObject; // Access the first row's TideTimesObject
+      console.log(`WeatherDataObject string: ${weatherDataObjectString}`);
+      
+      try {
+        const weatherDataObject = JSON.parse(weatherDataObjectString); // Parse the JSON string
+        console.log(`weatherDataObject: ${weatherDataObject}`);
+        response.json(weatherDataObject); // Send the parsed JSON
       } catch (parseError) {
         console.error("JSON parsing error:", parseError);
         response.status(500).json({ error: "Invalid JSON format" });
