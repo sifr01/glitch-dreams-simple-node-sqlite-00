@@ -78,12 +78,12 @@ app.get("/tideTimesDBquery", (request, response) => {
 
       // Assuming you want the last entry
       const tideTimesObjectString = rows[0].TideTimesObject; // Access the first row's TideTimesObject
-      console.log(`TideTimesObject string: ${tideTimesObjectString}`);
+      // console.log(`TideTimesObject string: ${tideTimesObjectString}`);
       
 
       try {
         const tideTimesObject = JSON.parse(tideTimesObjectString); // Parse the JSON string
-        console.log(`tideTimesObject: ${tideTimesObject}`);
+        // console.log(`tideTimesObject: ${tideTimesObject}`);
         response.json(tideTimesObject); // Send the parsed JSON
       } catch (parseError) {
         console.error("JSON parsing error:", parseError);
@@ -109,11 +109,11 @@ app.get("/weatherDBquery", (request, response) => {
 
       // Assuming you want the last entry
       const weatherDataObjectString = rows[0].WeatherDataObject; // Access the first row's TideTimesObject
-      console.log(`WeatherDataObject string: ${weatherDataObjectString}`);
+      // console.log(`WeatherDataObject string: ${weatherDataObjectString}`);
       
       try {
         const weatherDataObject = JSON.parse(weatherDataObjectString); // Parse the JSON string
-        console.log(`weatherDataObject: ${weatherDataObject}`);
+        // console.log(`weatherDataObject: ${weatherDataObject}`);
         response.json(weatherDataObject); // Send the parsed JSON
       } catch (parseError) {
         console.error("JSON parsing error:", parseError);
