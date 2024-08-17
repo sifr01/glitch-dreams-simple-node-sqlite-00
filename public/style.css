@@ -15,6 +15,29 @@ h1, h3 {
   text-align: center; /* Center the text */
 }
 
+footer {
+  margin-top: 50px;
+  padding-top: 25px;
+  border-top: 1px solid lightgrey;
+  text-align: center;
+}
+
+/* make footer be at the bottom */
+html, body {
+  height: 100%; /* Make sure the body takes the full height */
+  margin: 0;    /* Remove default margin */
+}
+
+body {
+  display: flex;            /* Use flexbox for layout */
+  flex-direction: column;   /* Stack children vertically */
+}
+
+main {
+  flex: 1;                 /* Allow the main content to grow */
+  padding: 20px;          /* Optional: Add some padding to the main content */
+}
+
 /* * {
   box-sizing: border-box;
 }
@@ -77,9 +100,4 @@ button:active {
 li {
   margin-bottom: 5px;
 }
-
-footer {
-  margin-top: 50px;
-  padding-top: 25px;
-  border-top: 1px solid lightgrey;
-} */
+ */
