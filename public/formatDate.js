@@ -1,7 +1,7 @@
 // formatDate.js
 
 // Function to format the date
-const formatDate = (dateString) => {
+export const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { weekday: 'long' }; // Get the full name of the weekday
     const weekday = date.toLocaleDateString('en-US', options).slice(0, 3); // Shorten to first 3 letters
