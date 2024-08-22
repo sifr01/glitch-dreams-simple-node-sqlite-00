@@ -44,7 +44,15 @@ main {
   padding: 20px;          /* Optional: Add some padding to the main content */
 }
 
+.button-container {
+  display: flex;                /* Use flexbox for layout */
+  justify-content: space-between; /* Space buttons to the left and right */
+  padding: 20px;              /* Add padding around the buttons */
+}
+
 button {
+  flex: 1;                    /* Allow buttons to grow equally */
+  margin: 0 10px;            /* Add margin between buttons */
   font-size: 16px;
   border-radius: 3px;
   background-color: lightgrey;
