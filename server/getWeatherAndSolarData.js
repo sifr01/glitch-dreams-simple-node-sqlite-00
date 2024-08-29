@@ -18,7 +18,7 @@ const urlWeather = `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${
 const urlSolar = `https://api.stormglass.io/v2/solar/point?lat=${lat}&lng=${lng}&params=${paramsSolar}`;
 
 // Function to make API calls
-const getWeatherData = async () => {
+const getWeatherAndSolarData = async () => {
   console.log("getWeatherData() function called");
   try {
     // Make both fetch requests concurrently
@@ -58,4 +58,4 @@ const getWeatherData = async () => {
   }
 }
 
-module.exports = { getWeatherData };
+module.exports = { getWeatherAndSolarData };

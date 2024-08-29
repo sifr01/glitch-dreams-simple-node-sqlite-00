@@ -84,7 +84,7 @@ tideTimesButton.addEventListener('click', event => {
 // Event listener for weatherDataButton
 weatherDataButton.addEventListener('click', event => {
   console.log("weatherDataButton API button clicked");
-  fetch("/getWeatherData", {})
+  fetch("/getWeatherAndSolarData", {})
     .then(response => {
       if (response.status === 429) {
         return response.json().then(data => {
@@ -95,7 +95,7 @@ weatherDataButton.addEventListener('click', event => {
     })
     .then(data => {
       if (data) {
-        console.log("The getWeatherData endpoint response message is: ", data);
+        console.log("The getWeatherAndSolarData endpoint response message is: ", data);
         // Handle the weather data here if needed
       }
     })
