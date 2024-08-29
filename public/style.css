@@ -7,10 +7,6 @@
   color: red;
 }
 
-td {
-  text-align: center;
-}
-
 h1, h3 {
   text-align: center; /* Center the text */
 }
@@ -89,6 +85,10 @@ th, td {
   border: 1px solid #ccc; /* Optional: add a border to cells */
   white-space: nowrap; /* Prevent text from wrapping to keep cell width minimal */
 }
+
+/* td {
+  font-weight: bold; /* Make the text bold
+} */
 
 /* Centering the table container */
 .tab-content {

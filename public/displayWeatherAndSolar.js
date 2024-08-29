@@ -21,7 +21,7 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
     const headers = [
         "Time", "Wind Speed (noaa)", "Gust (noaa)", 
         "Pressure (noaa)", "Water Temp (meto)", "Water Temp (noaa)", 
-        "Wave Height (noaa)", "UV Index (noaa)" // Include Wave Height (noaa)
+        "Wave Height (noaa)", "UV Index (noaa)"
     ];
 
     headers.forEach((headerText, index) => {
