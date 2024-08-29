@@ -69,6 +69,9 @@ button:active {
   box-shadow: none;
 }
 
+.refresh-button {
+  width: 100%;
+}
 
 
 /* ================= */

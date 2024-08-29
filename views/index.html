@@ -30,18 +30,27 @@
         
         <section class="dreams">
             <ul id="data"></ul>
-            <div class="button-container">
-                <button id="tide-times-button">Refresh Tide Times</button>
-                <button id="weather-data-button">Refresh Weather Data</button>
-                <button id="tide-times-DB-query">Query TideTimes DB</button>
-                <button id="weather-DB-query">Query Weather Data DB</button>
-                <div id="error-messages"></div>
-            </div>
+            <div id="error-messages"></div>
         </section>
         
+        <!-- Query buttons at the top -->
+        <div class="button-container">
+            <button id="tide-times-DB-query">Query TideTimes DB</button>
+            <button id="weather-DB-query">Query Weather Data DB</button>
+        </div>
+        
         <!-- Tab content -->
-        <div id="weather-solar-output" class="tab-content" style="display: none;"></div>
-        <div id="tide-times-table" class="tab-content" style="display: none;"></div>
+        <div id="tide-times-table" class="tab-content" style="display: none;">
+            <!-- Tide times data will be displayed here -->
+            <div id="tide-times-data"></div>
+            <button id="tide-times-button" class="refresh-button">Refresh Tide Times</button>
+        </div>
+        
+        <div id="weather-solar-output" class="tab-content" style="display: none;">
+            <!-- Weather data will be displayed here -->
+            <div id="weather-data"></div>
+            <button id="weather-data-button" class="refresh-button">Refresh Weather Data</button>
+        </div>
         
     </main>
 

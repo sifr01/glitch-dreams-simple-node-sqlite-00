@@ -27,6 +27,48 @@ function showTab(tabToShow) {
     tabToShow.style.display = 'block';
 }
 
+// Event listener for tide times database query (SELECT)
+tideTimesDBquery.addEventListener('click', event => {
+    console.log("tideTimesDBquery button clicked");
+    fetch("/tideTimesDBquery")
+        .then(response => {
+            console.log("Response received:", response);
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Tide times data received:", data.data);
+            displayTideTimesTable(data.data, 'tide-times-data'); // Display tide times data
+            showTab(tideTimesTable); // Ensure the tide times table is shown
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+});
+
+// Event listener for weather data database query (SELECT)
+weatherDBquery.addEventListener('click', event => {
+    console.log("weather-data-DB-query button clicked");
+    fetch("/weatherAndSolarDBquery")
+        .then(response => {
+            console.log("Response received:", response);
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Weather data received:", data);
+            displayWeatherAndSolar(data, 'weather-data'); // Display weather data
+            showTab(weatherSolarOutput); // Ensure the weather data output is shown
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+});
+
 // Event listener for tideTimesButton
 tideTimesButton.addEventListener('click', event => {
     console.log("tideTimesButton API button clicked");
@@ -77,47 +119,3 @@ weatherDataButton.addEventListener('click', event => {
         });
 });
 
-// Event listener for tide times database query (SELECT)
-tideTimesDBquery.addEventListener('click', event => {
-    console.log("tideTimesDBquery button clicked");
-    fetch("/tideTimesDBquery")
-        .then(response => {
-            console.log("Response received:", response);
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Tide times data received:", data.data);
-            displayTideTimesTable(data.data, 'tide-times-table');
-            showTab(tideTimesTable); // Ensure the tide times table is shown
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-});
-
-// Event listener for weather data database query (SELECT)
-weatherDBquery.addEventListener('click', event => {
-    console.log("weather-data-DB-query button clicked");
-    fetch("/weatherAndSolarDBquery")
-        .then(response => {
-            console.log("Response received:", response);
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Weather data received:", data);
-            displayWeatherAndSolar(data, 'weather-solar-output');
-            showTab(weatherSolarOutput); // Ensure the weather data output is shown
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-});
-
-// Initial setup to show the tide times table by default
-showTab(tideTimesTable);
