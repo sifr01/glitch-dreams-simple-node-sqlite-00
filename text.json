@@ -1,0 +1,248 @@
+{
+    "hours": [
+        {
+            "time": "2024-09-08T00:00:00+00:00",
+            "waterTemperature": {
+                "noaa": 16.25,
+                "sg": 16.25
+            },
+            "waveHeight": {
+                "meteo": 1.29,
+                "noaa": 1.77,
+                "sg": 1.29
+            },
+            "windDirection": {
+                "noaa": 355.46,
+                "sg": 355.46
+            },
+            "windSpeed": {
+                "noaa": 11.02,
+                "sg": 11.02
+            }
+        }
+    ]
+}
+{
+    "gust": {
+        "noaa": 14.43,
+        "sg": 14.43
+    },
+    "pressure": {
+        "noaa": 1012,
+        "sg": 1012
+    }
+
+
+
+
+
+{
+        "gust": {
+            "noaa": 14.43,
+            "sg": 14.43
+        },
+        "pressure": {
+            "noaa": 1012,
+            "sg": 1012
+        },
+        "time": "2024-09-07T23:00:00+00:00",
+        "waterTemperature": {
+            "noaa": 16.26,
+            "sg": 16.26
+        },
+        "waveHeight": {
+            "meteo": 1.25,
+            "noaa": 1.83,
+            "sg": 1.25
+        },
+        "windDirection": {
+            "noaa": 352.07,
+            "sg": 352.07
+        },
+        "windSpeed": {
+            "noaa": 11.71,
+            "sg": 11.71
+        }
+    },
+    {
+        "gust": {
+            "noaa": 13.26,
+            "sg": 13.26
+        },
+        "pressure": {
+            "noaa": 1011.93,
+            "sg": 1011.93
+        },
+        "time": "2024-09-08T00:00:00+00:00",
+        "waterTemperature": {
+            "noaa": 16.25,
+            "sg": 16.25
+        },
+        "waveHeight": {
+            "meteo": 1.29,
+            "noaa": 1.77,
+            "sg": 1.29
+        },
+        "windDirection": {
+            "noaa": 355.46,
+            "sg": 355.46
+        },
+        "windSpeed": {
+            "noaa": 11.02,
+            "sg": 11.02
+        }
+    }
+],
+"meta": {
+    "cost": 1,
+    "dailyQuota": 10,
+    "end": "2024-09-08 00:00",
+    "lat": 41.683,
+    "lng": -8.833,
+    "params": [
+        "waveHeight",
+        "windSpeed",
+        "gust",
+        "windDirection",
+        "waterTemperature",
+        "pressure"
+    ],
+    "requestCount": 2,
+    "start": "2024-08-29 00:00"
+}
+}
+
+
+
+{
+"time": "2024-09-07T21:00:00+00:00",
+"waterTemperature": {
+"noaa": 16.29,
+"sg": 16.29
+},
+"waveHeight": {
+"meteo": 1.18,
+"noaa": 1.95,
+"sg": 1.18
+},
+"windDirection": {
+"noaa": 345.3,
+"sg": 345.3
+},
+"windSpeed": {
+"noaa": 13.08,
+"sg": 13.08
+}
+},
+
+{
+"gust": {
+"noaa": 15.59,
+"sg": 15.59
+},
+"pressure": {
+"noaa": 1012.07,
+"sg": 1012.07
+},
+
+
+"time": "2024-09-07T22:00:00+00:00",
+"waterTemperature": {
+"noaa": 16.27,
+"sg": 16.27
+},
+"waveHeight": {
+"meteo": 1.22,
+"noaa": 1.89,
+"sg": 1.22
+},
+"windDirection": {
+"noaa": 348.69,
+"sg": 348.69
+},
+"windSpeed": {
+"noaa": 12.39,
+"sg": 12.39
+}
+},
+{
+"gust": {
+"noaa": 14.43,
+"sg": 14.43
+},
+"pressure": {
+"noaa": 1012,
+"sg": 1012
+},
+"time": "2024-09-07T23:00:00+00:00",
+"waterTemperature": {
+"noaa": 16.26,
+"sg": 16.26
+},
+"waveHeight": {
+"meteo": 1.25,
+"noaa": 1.83,
+"sg": 1.25
+},
+"windDirection": {
+"noaa": 352.07,
+"sg": 352.07
+},
+"windSpeed": {
+"noaa": 11.71,
+"sg": 11.71
+}
+},
+{
+"gust": {
+"noaa": 13.26,
+"sg": 13.26
+},
+"pressure": {
+"noaa": 1011.93,
+"sg": 1011.93
+},
+"time": "2024-09-08T00:00:00+00:00",
+"waterTemperature": {
+"noaa": 16.25,
+"sg": 16.25
+},
+"waveHeight": {
+"meteo": 1.29,
+"noaa": 1.77,
+"sg": 1.29
+},
+"windDirection": {
+"noaa": 355.46,
+"sg": 355.46
+},
+"windSpeed": {
+"noaa": 11.02,
+"sg": 11.02
+}
+}
+],
+"meta": {
+"cost": 1,
+"dailyQuota": 10,
+"end": "2024-09-08 00:00",
+"lat": 41.683,
+"lng": -8.833,
+"params": [
+"waveHeight",
+"windSpeed",
+"gust",
+"windDirection",
+"waterTemperature",
+"pressure"
+],
+"requestCount": 2,
+"start": "2024-08-29 00:00"
+}
+}
+
+
+
+
+
+{"hours":[{"time":"2024-09-08T00:00:00+00:00","waterTemperature":{"noaa":16.25,"sg":16.25},"waveHeight":{"meteo":1.29,"noaa":1.77,"sg":1.29},"windDirection":{"noaa":355.46,"sg":355.46},"windSpeed":{"noaa":11.02,"sg":11.02},"gust": {"noaa": 13.26,"sg": 13.26},"pressure": {"noaa": 1011.93,"sg": 1011.93},}]}

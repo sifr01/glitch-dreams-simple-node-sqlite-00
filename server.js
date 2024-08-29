@@ -40,19 +40,19 @@ const db = new sqlite3.Database(dbFile);
 // Check if the database file exists and handle table creation
 db.serialize(() => {
 
-  const initializeDatabase = async (tableName) => {
+  const initializeDatabase = async (tableName, sampleData) => {
     const exists = await checkTableExists(db, tableName);
     if (!exists) {
       await createTable(db, tableName);
-      await insertDummyData(db, tableName, [`{"data":[{"height":0,"time":"0000-01-01T00:00:00+00:00","type":"low"}]}`, 1672578061000]);
+      await insertDummyData(db, tableName, [sampleData, 1672578061000]);
     } else {
       console.log(`Table ${tableName} already exists.`);
     }
   };
   
-  initializeDatabase("TideTimes").catch(err => console.error("Initialization error:", err));
-  initializeDatabase("WeatherData").catch(err => console.error("Initialization error:", err));
-  initializeDatabase("SolarData").catch(err => console.error("Initialization error:", err));
+  initializeDatabase("TideTimes", `{"data":[{"height":0,"time":"0000-01-01T00:00:00+00:00","type":"low"}]}`).catch(err => console.error("Initialization error:", err));
+  initializeDatabase("WeatherData", `{"hours":[{"time":"2024-09-08T00:00:00+00:00","waterTemperature":{"noaa":16.25,"sg":16.25},"waveHeight":{"meteo":1.29,"noaa":1.77,"sg":1.29},"windDirection":{"noaa":355.46,"sg":355.46},"windSpeed":{"noaa":11.02,"sg":11.02},"gust": {"noaa": 13.26,"sg": 13.26},"pressure": {"noaa": 1011.93,"sg": 1011.93}}]}`).catch(err => console.error("Initialization error:", err));
+  initializeDatabase("SolarData", `{"hours":[{"time":"2024-08-29T00:00:00+00:00","uvIndex":{"noaa":0,"sg":0}}]}`).catch(err => console.error("Initialization error:", err));
 });
 
 
