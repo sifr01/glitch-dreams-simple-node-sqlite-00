@@ -19,10 +19,9 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
     const header = table.createTHead();
     const headerRow = header.insertRow(0);
     const headers = [
-        "Time", "Wind Speed (noaa)", "Gust (dwd)", "Gust (noaa)", "Gust (sg)", 
-        "Pressure (dwd)", "Pressure (noaa)", "Pressure (sg)", 
-        "Water Temp (meto)", "Water Temp (noaa)", "Wave Height (dwd)", "Wave Height (noaa)",
-        "UV Index (noaa)" // Only include NOAA UV Index
+        "Time", "Wind Speed (noaa)", "Gust (noaa)", 
+        "Pressure (noaa)", "Water Temp (meto)", "Water Temp (noaa)", 
+        "Wave Height (noaa)", "UV Index (noaa)" // Include Wave Height (noaa)
     ];
 
     headers.forEach((headerText, index) => {
@@ -52,15 +51,10 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
         // Use the helper function to create cells for weather data
         createCell(row, formattedDate, isToday); // Time cell
         createCell(row, hour.windSpeed.noaa, isToday); // Wind Speed (noaa)
-        createCell(row, hour.gust.dwd, isToday); // Gust (dwd)
         createCell(row, hour.gust.noaa, isToday); // Gust (noaa)
-        createCell(row, hour.gust.sg, isToday); // Gust (sg)
-        createCell(row, hour.pressure.dwd, isToday); // Pressure (dwd)
         createCell(row, hour.pressure.noaa, isToday); // Pressure (noaa)
-        createCell(row, hour.pressure.sg, isToday); // Pressure (sg)
         createCell(row, hour.waterTemperature.meto, isToday); // Water Temp (meto)
         createCell(row, hour.waterTemperature.noaa, isToday); // Water Temp (noaa)
-        createCell(row, hour.waveHeight.dwd, isToday); // Wave Height (dwd)
         createCell(row, hour.waveHeight.noaa, isToday); // Wave Height (noaa)
 
         // Add UV index cell for NOAA
