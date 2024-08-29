@@ -92,9 +92,9 @@ app.get("/tideTimesDBquery", (request, response) => {
     });
 });
 
-// define weatherDBquery endpoint
-app.get("/weatherDBquery", (request, response) => {
-  console.log("weatherDBquery internal server endpoint received get request");
+// define weatherAndSolarDBquery endpoint
+app.get("/weatherAndSolarDBquery", (request, response) => {
+  console.log("weatherAndSolarDBquery internal server endpoint received get request");
   db.all("SELECT WeatherDataObject FROM WeatherData WHERE time = (SELECT MAX(time) FROM WeatherData);",
     (err, rows) => { // Change 'string' to 'rows' to reflect that it's an array of objects
       if (err) {

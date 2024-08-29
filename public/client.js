@@ -131,7 +131,7 @@ tideTimesDBquery.addEventListener('click', event => {
 weatherDBquery.addEventListener('click', event => {
   console.log("weather-data-DB-query button clicked");
 
-  fetch("/weatherDBquery")
+  fetch("/weatherAndSolarDBquery")
     .then(response => {
       console.log("Response received:", response);
       if (!response.ok) {
