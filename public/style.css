@@ -86,9 +86,9 @@ th, td {
   white-space: nowrap; /* Prevent text from wrapping to keep cell width minimal */
 }
 
-/* td {
-  font-weight: bold; /* Make the text bold
-} */
+thead {
+  font-weight: bold; /* Make the text bold */
+}
 
 /* Centering the table container */
 .tab-content {

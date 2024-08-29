@@ -4,66 +4,52 @@ import { formatDate } from './formatDate.js';
 
 // Function to create and display a tide times table
 export const displayTideTimesTable = (tideTimesObject, containerId) => {
-  // Parse the tideTimesObject to get the data
-  const data = tideTimesObject;
+    const data = tideTimesObject; // Parse the tideTimesObject to get the data
 
-  // Get the container to append the table
-  const container = document.getElementById(containerId);
-  container.innerHTML = ""; // Clear previous entries
+    const container = document.getElementById(containerId);
+    container.innerHTML = ""; // Clear previous entries
 
-  // Create and append the h1 element
-  const h1 = document.createElement("h1");
-  h1.innerText = "Tide Times";
-  container.appendChild(h1);
+    const h1 = document.createElement("h1");
+    h1.innerText = "Tide Times";
+    container.appendChild(h1);
 
-  // Create a table element
-  const table = document.createElement("table");
-  table.border = "1"; // Optional: Add border to the table
+    const table = document.createElement("table");
+    table.border = "1"; // Optional: Add border to the table
 
-  // Create table header
-  const headerRow = document.createElement("tr");
-  const headers = ["Time", "Height (metres)", "Type"];
-  headers.forEach(headerText => {
-    const header = document.createElement("th");
-    header.innerText = headerText;
-    headerRow.appendChild(header);
-  });
-  table.appendChild(headerRow);
+    const header = table.createTHead();
+    const headerRow = header.insertRow(0);
+    const headers = ["Time", "Height (metres)", "Type"];
 
-  // Populate the table with the last entry data
-  data.forEach(entry => {
-      const row = document.createElement("tr");
-      const heightCell = document.createElement("td");
-      // Round height to 2 decimal places
-      heightCell.innerText = entry.height.toFixed(2);
-      const timeCell = document.createElement("td");
-      // Format the time
-      const { formattedDate, isToday } = formatDate(entry.time);
-      timeCell.innerText = formattedDate;
+    headers.forEach((headerText, index) => {
+        const cell = headerRow.insertCell(index);
+        cell.textContent = headerText;
+    });
 
-      // Apply light blue background if it's today
-      if (isToday) {
-          timeCell.style.backgroundColor = "lightblue"; // Change background color to light blue
-          heightCell.style.backgroundColor = "lightblue"; // Change height cell background color to light blue
-          const typeCell = document.createElement("td");
-          typeCell.innerText = entry.type;
-          typeCell.style.backgroundColor = "lightblue"; // Change type cell background color to light blue
+    const tbody = table.createTBody();
 
-          row.appendChild(timeCell);
-          row.appendChild(heightCell);
-          row.appendChild(typeCell);
-      } else {
-          const typeCell = document.createElement("td");
-          typeCell.innerText = entry.type;
+    // Helper function to create a cell and apply styles if it's today
+    const createCell = (row, content, isToday) => {
+        const cell = row.insertCell();
+        cell.textContent = content;
+        if (isToday) {
+            cell.style.backgroundColor = "lightblue"; // Change background color to light blue
+        }
+        return cell;
+    };
 
-          row.appendChild(timeCell);
-          row.appendChild(heightCell);
-          row.appendChild(typeCell);
-      }
+    // Loop through the tide times data and create rows
+    data.forEach(entry => {
+        const row = tbody.insertRow();
+        
+        // Format the time using formatDate function
+        const { formattedDate, isToday } = formatDate(entry.time);
 
-      table.appendChild(row);
-  });
+        // Use the helper function to create cells for tide data
+        createCell(row, formattedDate, isToday); // Time cell
+        createCell(row, entry.height.toFixed(2), isToday); // Height (metres)
+        createCell(row, entry.type, isToday); // Type
+    });
 
-  // Append the table to the specified container
-  container.appendChild(table);
+    // Append the table to the specified container
+    container.appendChild(table);
 };
