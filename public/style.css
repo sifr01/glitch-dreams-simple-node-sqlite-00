@@ -78,15 +78,16 @@ button:active {
 
 /* General table styling */
 table {
-  width: 100%; /* Make the table take the full width of its container */
+  table-layout: auto; /* Allow the table to adjust based on content */
   border-collapse: collapse; /* Collapse borders for a cleaner look */
-  margin: 20px 0; /* Add some margin for spacing */
+  margin: 20px auto; /* Center the table with auto margins */
 }
 
 th, td {
-  padding: 10px; /* Add padding for table cells */
+  padding: 5px; /* Reduce padding for tighter fit */
   text-align: center; /* Center text in table cells */
   border: 1px solid #ccc; /* Optional: add a border to cells */
+  white-space: nowrap; /* Prevent text from wrapping to keep cell width minimal */
 }
 
 /* Centering the table container */
@@ -95,8 +96,6 @@ th, td {
   flex-direction: column; /* Stack children vertically */
   align-items: center; /* Center children horizontally */
   margin: 0 auto; /* Center the container itself */
-  width: 80%; /* Set a width for the table container */
-  max-width: 600px; /* Optional: set a max width */
 }
 
 /* ================= */
