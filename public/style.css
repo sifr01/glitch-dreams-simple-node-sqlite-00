@@ -1,4 +1,4 @@
-/* styles
+/* style.css
 /* called by your view template */
 
 .error-message {
@@ -69,10 +69,35 @@ button:active {
   box-shadow: none;
 }
 
+/* make refresh button span width of screen */
 .refresh-button {
   width: 100%;
 }
 
+/* make tables centred on screen */
+
+/* General table styling */
+table {
+  width: 100%; /* Make the table take the full width of its container */
+  border-collapse: collapse; /* Collapse borders for a cleaner look */
+  margin: 20px 0; /* Add some margin for spacing */
+}
+
+th, td {
+  padding: 10px; /* Add padding for table cells */
+  text-align: center; /* Center text in table cells */
+  border: 1px solid #ccc; /* Optional: add a border to cells */
+}
+
+/* Centering the table container */
+.tab-content {
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+  margin: 0 auto; /* Center the container itself */
+  width: 80%; /* Set a width for the table container */
+  max-width: 600px; /* Optional: set a max width */
+}
 
 /* ================= */
 
