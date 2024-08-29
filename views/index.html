@@ -2,7 +2,7 @@
 <!-- served from your routes in server.js -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,64 +16,43 @@
     
     <!-- import the webpage's client-side javascript file -->
     <script type="module" src="/client.js" defer></script>
-  </head>
-  <body>
+</head>
+<body>
     <header>
-      <h1>
-        Tide & Weather Guide
-      </h1>
-      <h3>
-        for the sea side
-      </h3>
+        <h1>Tide & Weather Guide</h1>
+        <h3>for the sea side</h3>
     </header>
 
     <main>
-      <p class="bold">Oh hi,</p>
-      
-      <p>If you're going to the beach, here is the tide and weather info for co-ordinates: 41.683, -8.833, Viana do Castelo, Portugal</p>
-      
-      <!-- <form>
-        <input name="dream" aria-label="a new dream" type="text" maxlength="100" placeholder="Dreams!">
-        <button type="submit" id="submit-dream">Submit Dream</button>
-      </form> -->
-      
-      <section class="dreams">
-        <ul id="data"></ul>
-        <!-- <button id="clear-data">
-          Clear data
-        </button> -->
-        <div class="button-container">
-        <button id="tide-times-button">
-          Refresh Tide Times
-        </button>
-        <button id="weather-data-button">
-          Refresh Weather Data
-        </button>
-        <button id="tide-times-DB-query">
-          query TideTimes DB
-        </button>
-        <button id="weather-DB-query">
-          query Weather Data DB
-        </button>
-        <div id="error-messages"></div>
-      </div>
-      </section>
-      
-      <div id="weather-solar-output"></div>
-      <div id="tide-times-table"></div>
-      
+        <p class="bold">Oh hi,</p>
+        
+        <p>If you're going to the beach, here is the tide and weather info for co-ordinates: 41.683, -8.833, Viana do Castelo, Portugal</p>
+        
+        <section class="dreams">
+            <ul id="data"></ul>
+            <div class="button-container">
+                <button id="tide-times-button">Refresh Tide Times</button>
+                <button id="weather-data-button">Refresh Weather Data</button>
+                <button id="tide-times-DB-query">Query TideTimes DB</button>
+                <button id="weather-DB-query">Query Weather Data DB</button>
+                <div id="error-messages"></div>
+            </div>
+        </section>
+        
+        <!-- Tab content -->
+        <div id="weather-solar-output" class="tab-content" style="display: none;"></div>
+        <div id="tide-times-table" class="tab-content" style="display: none;"></div>
+        
     </main>
 
     <footer>
-      <br>
-      This app makes API calls to stormglass.io to retrieve data <br>
-      It's hosting cleverly stays free by rate limiting API calls to less than 10 calls a day and stores the retrieved data in an sqlite3 database<br>
-      Made with <a href="https://glitch.com">Glitch</a>!
+        <br>
+        This app makes API calls to stormglass.io to retrieve data <br>
+        It's hosting cleverly stays free by rate limiting API calls to less than 10 calls a day and stores the retrieved data in an sqlite3 database<br>
+        Made with <a href="https://glitch.com">Glitch</a>!
     </footer>
 
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
     <script src="https://button.glitch.me/button.js" defer></script>
-  </body>
+</body>
 </html>
