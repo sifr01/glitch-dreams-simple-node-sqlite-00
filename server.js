@@ -95,31 +95,56 @@ app.get("/tideTimesDBquery", (request, response) => {
 // define weatherAndSolarDBquery endpoint
 app.get("/weatherAndSolarDBquery", (request, response) => {
   console.log("weatherAndSolarDBquery internal server endpoint received get request");
-  db.all("SELECT WeatherDataObject FROM WeatherData WHERE time = (SELECT MAX(time) FROM WeatherData);",
-    (err, rows) => { // Change 'string' to 'rows' to reflect that it's an array of objects
+
+  // Query to get the latest WeatherDataObject
+  const weatherQuery = "SELECT WeatherDataObject FROM WeatherData WHERE time = (SELECT MAX(time) FROM WeatherData);";
+  
+  // Query to get the latest SolarDataObject
+  const solarQuery = "SELECT SolarDataObject FROM SolarData WHERE time = (SELECT MAX(time) FROM SolarData);";
+
+  // Execute both queries in parallel
+  db.all(weatherQuery, (err, weatherRows) => {
+    if (err) {
+      console.error("Database error:", err);
+      return response.status(500).json({ error: "Database error" });
+    }
+
+    // Check if weatherRows is not empty
+    if (weatherRows.length === 0) {
+      return response.status(404).json({ error: "No weather data found" });
+    }
+
+    const weatherDataObjectString = weatherRows[0].WeatherDataObject; // Access the first row's WeatherDataObject
+
+    // Execute the solar query
+    db.all(solarQuery, (err, solarRows) => {
       if (err) {
         console.error("Database error:", err);
         return response.status(500).json({ error: "Database error" });
       }
-      
-      // Check if rows is not empty
-      if (rows.length === 0) {
-        return response.status(404).json({ error: "No data found" });
+
+      // Check if solarRows is not empty
+      if (solarRows.length === 0) {
+        return response.status(404).json({ error: "No solar data found" });
       }
 
-      // Assuming you want the last entry
-      const weatherDataObjectString = rows[0].WeatherDataObject; // Access the first row's TideTimesObject
-      // console.log(`WeatherDataObject string: ${weatherDataObjectString}`);
-      
+      const solarDataObjectString = solarRows[0].SolarDataObject; // Access the first row's SolarDataObject
+
       try {
         const weatherDataObject = JSON.parse(weatherDataObjectString); // Parse the JSON string
-        // console.log(`weatherDataObject: ${weatherDataObject}`);
-        response.json(weatherDataObject); // Send the parsed JSON
+        const solarDataObject = JSON.parse(solarDataObjectString); // Parse the JSON string
+
+        // Send both parsed JSON objects in the response
+        response.json({
+          weatherData: weatherDataObject,
+          solarData: solarDataObject
+        });
       } catch (parseError) {
         console.error("JSON parsing error:", parseError);
         response.status(500).json({ error: "Invalid JSON format" });
       }
     });
+  });
 });
 
 

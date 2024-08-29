@@ -3,13 +3,14 @@
 import { formatDate } from './formatDate.js';
 
 export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
-    const weatherData = weatherAndSolarObject; // No need to parse if it's already an object
+    const weatherData = weatherAndSolarObject.weatherData; // Access weather data
+    const solarData = weatherAndSolarObject.solarData; // Access solar data
 
     const container = document.getElementById(containerId);
     container.innerHTML = ""; // Clear previous entries
 
     const h1 = document.createElement("h1");
-    h1.innerText = "Weather";
+    h1.innerText = "Weather and Solar Data";
     container.appendChild(h1);
 
     const table = document.createElement('table');
@@ -17,7 +18,12 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
 
     const header = table.createTHead();
     const headerRow = header.insertRow(0);
-    const headers = ["Time", "Wind Speed (noaa)", "Gust (dwd)", "Gust (noaa)", "Gust (sg)", "Pressure (dwd)", "Pressure (noaa)", "Pressure (sg)", "Water Temp (meto)", "Water Temp (noaa)", "Wave Height (dwd)", "Wave Height (noaa)"];
+    const headers = [
+        "Time", "Wind Speed (noaa)", "Gust (dwd)", "Gust (noaa)", "Gust (sg)", 
+        "Pressure (dwd)", "Pressure (noaa)", "Pressure (sg)", 
+        "Water Temp (meto)", "Water Temp (noaa)", "Wave Height (dwd)", "Wave Height (noaa)",
+        "UV Index (noaa)" // Only include NOAA UV Index
+    ];
 
     headers.forEach((headerText, index) => {
         const cell = headerRow.insertCell(index);
@@ -37,13 +43,13 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
     };
 
     // Loop through the weather data and create rows
-    weatherData.hours.forEach(hour => {
+    weatherData.hours.forEach((hour, index) => {
         const row = tbody.insertRow();
         
         // Format the time using formatDate function
         const { formattedDate, isToday } = formatDate(hour.time);
 
-        // Use the helper function to create cells
+        // Use the helper function to create cells for weather data
         createCell(row, formattedDate, isToday); // Time cell
         createCell(row, hour.windSpeed.noaa, isToday); // Wind Speed (noaa)
         createCell(row, hour.gust.dwd, isToday); // Gust (dwd)
@@ -56,6 +62,15 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
         createCell(row, hour.waterTemperature.noaa, isToday); // Water Temp (noaa)
         createCell(row, hour.waveHeight.dwd, isToday); // Wave Height (dwd)
         createCell(row, hour.waveHeight.noaa, isToday); // Wave Height (noaa)
+
+        // Add UV index cell for NOAA
+        if (solarData && solarData.hours && solarData.hours[index]) {
+            const solarHour = solarData.hours[index];
+            createCell(row, solarHour.uvIndex.noaa, isToday); // UV Index (noaa)
+        } else {
+            // If solar data is not available, add an empty cell
+            createCell(row, "", isToday); // Empty cell for UV Index (noaa)
+        }
     });
 
     // Append the table to the specified container
