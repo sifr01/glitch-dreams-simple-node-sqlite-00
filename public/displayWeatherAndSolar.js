@@ -19,9 +19,9 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
     const header = table.createTHead();
     const headerRow = header.insertRow(0);
     const headers = [
-        "Time", "Wind Speed (noaa)", "Gust (noaa)", 
-        "Pressure (noaa)", "Water Temp (meto)", "Water Temp (noaa)", 
-        "Wave Height (noaa)", "UV Index (noaa)"
+        "Time", "Wind Speed m/s", "Gust m/s", 
+        "Pressure hPa", "Water Temp ℃", "Water Temp℃", 
+        "Wave Height m", "UV Index W/m²"
     ];
 
     headers.forEach((headerText, index) => {
@@ -66,6 +66,21 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
             // If solar data is not available, add an empty cell
             createCell(row, "", isToday); // Empty cell for UV Index (noaa)
         }
+    });
+
+    // Define the footer data
+    const footers = [
+        "Data source:", "NOAA", "NOAA", 
+        "NOAA", "METO", "NOAA", 
+        "NOAA", "NOAA"
+    ];
+
+    // Create a new footer row
+    const footerRow = tbody.insertRow();
+    footers.forEach((footerText, index) => {
+        const cell = footerRow.insertCell(index);
+        cell.textContent = footerText;
+        cell.style.fontWeight = "bold"; // Optional: Make footer text bold
     });
 
     // Append the table to the specified container

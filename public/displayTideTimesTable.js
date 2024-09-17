@@ -18,7 +18,7 @@ export const displayTideTimesTable = (tideTimesObject, containerId) => {
 
     const header = table.createTHead();
     const headerRow = header.insertRow(0);
-    const headers = ["Time", "Height (metres)", "Type"];
+    const headers = ["Time", "Height m", "Type"];
 
     headers.forEach((headerText, index) => {
         const cell = headerRow.insertCell(index);
@@ -49,6 +49,19 @@ export const displayTideTimesTable = (tideTimesObject, containerId) => {
         createCell(row, formattedDate, isToday); // Time cell
         createCell(row, entry.height.toFixed(2), isToday); // Height (metres)
         createCell(row, entry.type, isToday); // Type
+    });
+
+    // Define the footer data
+    const footers = [
+        "Data source:", "Viana", "SG HC"
+    ];
+
+    // Create a new footer row
+    const footerRow = tbody.insertRow();
+    footers.forEach((footerText, index) => {
+        const cell = footerRow.insertCell(index);
+        cell.textContent = footerText;
+        cell.style.fontWeight = "bold"; // Optional: Make footer text bold
     });
 
     // Append the table to the specified container
