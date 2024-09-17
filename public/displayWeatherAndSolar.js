@@ -27,6 +27,7 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
     headers.forEach((headerText, index) => {
         const cell = headerRow.insertCell(index);
         cell.textContent = headerText;
+        cell.classList.add('sticky-header'); // Add a class for styling
     });
 
     const tbody = table.createTBody();
