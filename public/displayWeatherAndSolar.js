@@ -20,7 +20,7 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
     const headerRow = header.insertRow(0);
     const headers = [
         "Time", "Wind Speed m/s", "Gust m/s", 
-        "Pressure hPa", "Water Temp ℃", "Water Temp℃", 
+        "Pressure hPa", "Water Temp ℃", "Water Temp ℃", 
         "Wave Height m", "UV Index W/m²"
     ];
 
