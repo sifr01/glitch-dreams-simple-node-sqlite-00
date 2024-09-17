@@ -105,3 +105,43 @@ thead {
   white-space: normal; /* Allow text to wrap in sticky header */
   max-width: 75px; /* Set a max width for header cells (adjust as needed) */
 }
+
+/* TABS TABS TABS TABS TABS TABS TABS TABS TABS TABS */
+
+/* Tab container styling */
+.tab-container {
+  display: flex; /* Use flexbox for horizontal layout */
+  justify-content: center; /* Center the tabs */
+  margin: 20px 0; /* Add some margin */
+  width: 100%; /* Make the tab container take the full width */
+}
+
+/* Individual tab styling */
+.tab {
+  flex: 1; /* Allow tabs to grow equally */
+  padding: 10px 20px; /* Add padding for better spacing */
+  cursor: pointer; /* Change cursor to pointer */
+  background-color: #f1f1f1; /* Light background color */
+  border: 1px solid #ccc; /* Border for the tabs */
+  border-bottom: none; /* Remove bottom border for the active tab effect */
+  margin-right: 5px; /* Space between tabs */
+  transition: background-color 0.3s; /* Smooth background color transition */
+  text-align: center; /* Center text horizontally */
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center text vertically */
+  justify-content: center; /* Center text horizontally */
+}
+
+/* Remove margin from the last tab */
+.tab:last-child {
+  margin-right: 0; /* Remove right margin for the last tab */
+}
+
+/* Active tab styling */
+.tab.active {
+  background-color: white; /* Change background for active tab */
+  font-weight: bold; /* Make active tab bold */
+  border-top: 2px solid #007BFF; /* Highlight active tab with a top border */
+}
+
+/* END OF TABS END OF TABS END OF TABS END OF TABS */

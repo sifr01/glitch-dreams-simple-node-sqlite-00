@@ -3,20 +3,21 @@
 import { displayTideTimesTable } from './displayTideTimesTable.js';
 import { displayWeatherAndSolar } from './displayWeatherAndSolar.js';
 import { displayErrorMessage } from './displayErrorMessages.js';
+import { switchTab } from './switchTab.js';
 
 console.log("client.js is running");
 
 // Define variables that reference elements on our page
 const errorMessage = document.getElementById("error-messages");
+
 const tideTimesButton = document.querySelector('#tide-times-button');
 const weatherDataButton = document.querySelector('#weather-data-button');
+
 const tideTimesTable = document.getElementById("tide-times-table");
 const weatherSolarOutput = document.getElementById("weather-solar-output");
-const tideTimesDBquery = document.querySelector('#tide-times-DB-query');
-const weatherDBquery = document.querySelector('#weather-DB-query');
 
 // Function to show the selected tab and hide others
-function showTab(tabToShow) {
+const showTab = (tabToShow) => {
     // Hide all tab contents
     const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => {
@@ -27,9 +28,17 @@ function showTab(tabToShow) {
     tabToShow.style.display = 'block';
 }
 
+// REFRESH FUNCTIONALITY REFRESH FUNCTIONALITY REFRESH FUNCTIONALITY
+const tideTimesDBquery = document.querySelector('#tide-times-DB-query');
+const weatherDBquery = document.querySelector('#weather-DB-query');
+
+const tideTimesTab = document.getElementById('tide-times-DB-query');
+const weatherTab = document.getElementById('weather-DB-query');
+
 // Event listener for tide times database query (SELECT)
 tideTimesDBquery.addEventListener('click', event => {
     console.log("tideTimesDBquery button clicked");
+    switchTab(tideTimesTab);
     fetch("/tideTimesDBquery")
         .then(response => {
             console.log("Response received:", response);
@@ -51,6 +60,8 @@ tideTimesDBquery.addEventListener('click', event => {
 // Event listener for weather data database query (SELECT)
 weatherDBquery.addEventListener('click', event => {
     console.log("weather-data-DB-query button clicked");
+    switchTab(weatherTab);
+
     fetch("/weatherAndSolarDBquery")
         .then(response => {
             console.log("Response received:", response);
@@ -68,6 +79,8 @@ weatherDBquery.addEventListener('click', event => {
             console.error('There was a problem with the fetch operation:', error);
         });
 });
+
+// REFRESH FUNCTIONALITY REFRESH FUNCTIONALITY REFRESH FUNCTIONALITY
 
 // Event listener for tideTimesButton
 tideTimesButton.addEventListener('click', event => {
@@ -118,4 +131,3 @@ weatherDataButton.addEventListener('click', event => {
             displayErrorMessage("An error occurred while fetching weather data.");
         });
 });
-
