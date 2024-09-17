@@ -131,3 +131,8 @@ weatherDataButton.addEventListener('click', event => {
             displayErrorMessage("An error occurred while fetching weather data.");
         });
 });
+
+// Simulate a click on the tideTimesDBquery button when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    tideTimesDBquery.click();
+});
