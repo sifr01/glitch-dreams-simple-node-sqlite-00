@@ -70,8 +70,6 @@ button:active {
   width: 100%;
 }
 
-/* make tables centred on screen */
-
 /* General table styling */
 table {
   table-layout: auto; /* Allow the table to adjust based on content */
@@ -83,7 +81,7 @@ th, td {
   padding: 5px; /* Reduce padding for tighter fit */
   text-align: center; /* Center text in table cells */
   border: 1px solid #ccc; /* Optional: add a border to cells */
-  white-space: nowrap; /* Prevent text from wrapping to keep cell width minimal */
+  white-space: normal; /* Allow text to wrap */
 }
 
 thead {
@@ -104,54 +102,6 @@ thead {
   background-color: white; /* Background color for the header */
   z-index: 10; /* Ensure the header is above other content */
   border-bottom: 2px solid #ccc; /* Optional: add a bottom border */
+  white-space: normal; /* Allow text to wrap in sticky header */
+  max-width: 75px; /* Set a max width for header cells (adjust as needed) */
 }
-
-/* ================= */
-
-/* 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: helvetica, arial, sans-serif;
-  margin: 2em;
-}
-
-h1 {
-  font-style: italic;
-  color: #373fff;
-}
-
-.bold {
-  font-weight: bold;
-}
-
-p {
-  max-width: 600px;
-}
-
-form {
-  margin-bottom: 25px;
-  padding: 15px;
-  background-color: cyan;
-  display: inline-block;
-  width: 100%;
-  max-width: 340px;
-  border-radius: 3px;
-}
-
-input {
-  display: block;
-  margin-bottom: 10px;
-  padding: 5px;
-  width: 100%;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  font-size: 16px;
-}
-
-li {
-  margin-bottom: 5px;
-} */
-
