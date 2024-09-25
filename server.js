@@ -24,6 +24,8 @@ app.use(express.static("public"));    // http://expressjs.com/en/starter/static-
 // we've started you off with Express,
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
+// ============================================================================
+
 // Ensure the .data directory exists
 const dataDir = path.join(__dirname, './server/.data');
 if (!fs.existsSync(dataDir)) {
@@ -56,11 +58,11 @@ db.serialize(() => {
   initializeDatabase("SolarData", `{"hours":[{"time":"2024-08-29T00:00:00+00:00","uvIndex":{"noaa":0,"sg":0}}]}`).catch(err => console.error("Initialization error:", err));
 });
 
-
-// http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
+
+// ============================================================================
 
 // define tideTimesDBquery endpoint
 app.get("/tideTimesDBquery", async (request, response) => {
@@ -98,28 +100,9 @@ app.get("/weatherAndSolarDBquery", async (request, response) => {
   }
 });
 
+// ============================================================================
 
-// // endpoint to add a tideTimesObject to the database
-// app.post("/addDream", (request, response) => {
-//   console.log(`add to tideTimesObject ${request.body.tideTimesObject}`);
-
-//   // DISALLOW_WRITE is an ENV variable that gets reset for new projects
-//   // so they can write to the database
-//   if (!process.env.DISALLOW_WRITE) {
-//     const cleansedDream = cleanseString(request.body.tideTimesObject);
-//     db.run(`INSERT INTO TideTimes (tideTimesObject, time) VALUES (?, ?)`, [cleansedDream, Date.now()], error => {
-//       if (error) {
-//         response.send({ message: "error!" });
-//       } else {
-//         response.send({ message: "success" });
-//       }
-//     });
-//   }
-// });
-
-
-
-// Endpoint for getTideTimes and insertion of API data into the SQLite database
+// Endpoint for getTideTimes (API call) and insertion of API data into the SQLite database
 app.get('/getTideTimes', async (req, res) => {
   console.log('GET request reached the internal server side endpoint: getTideTimes');
 
@@ -157,11 +140,10 @@ app.get('/getTideTimes', async (req, res) => {
     // 6. Handle the error appropriately
     res.status(500).json({ error: error.message });
   }
-
 });
 
 
-// Endpoint for getWeatherAndSolarData and insertion of API data into the SQLite database
+// Endpoint for getWeatherAndSolarData (API call) and insertion of API data into the SQLite database
 app.get('/getWeatherAndSolarData', async (req, res) => {
   console.log('GET request reached the internal server side endpoint: getWeatherAndSolarData');
 
@@ -205,37 +187,34 @@ app.get('/getWeatherAndSolarData', async (req, res) => {
     // 6. Handle the error appropriately
     res.status(500).json({ error: error.message });
   }
-
 });
 
+// ============================================================================
 
-
-
-
-// endpoint to clear tideTimesObject from the database
-app.get("/clearDOM", (request, response) => {
-  // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
-  if (!process.env.DISALLOW_WRITE) {
-    db.each(
-      "SELECT * from TideTimes",
-      (err, row) => {
-        console.log("row", row);
-        db.run(`DELETE FROM TideTimes WHERE ID=?`, row.id, error => {
-          if (row) {
-            console.log(`deleted row ${row.id}`);
-          }
-        });
-      },
-      err => {
-        if (err) {
-          response.send({ message: "error!" });
-        } else {
-          response.send({ message: "success" });
-        }
-      }
-    );
-  }
-});
+// // endpoint to clear tideTimesObject from the database
+// app.get("/clearDOM", (request, response) => {
+//   // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
+//   if (!process.env.DISALLOW_WRITE) {
+//     db.each(
+//       "SELECT * from TideTimes",
+//       (err, row) => {
+//         console.log("row", row);
+//         db.run(`DELETE FROM TideTimes WHERE ID=?`, row.id, error => {
+//           if (row) {
+//             console.log(`deleted row ${row.id}`);
+//           }
+//         });
+//       },
+//       err => {
+//         if (err) {
+//           response.send({ message: "error!" });
+//         } else {
+//           response.send({ message: "success" });
+//         }
+//       }
+//     );
+//   }
+// });
 
 // Cleanse the API call data - ADD THIS LATER!
 // helper function that prevents html/css/script malice
