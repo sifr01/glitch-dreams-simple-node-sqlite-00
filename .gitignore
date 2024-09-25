@@ -15,3 +15,6 @@ server/.data
 # this file contains the API key so will not be hosted publicly on github
 # but it will be added to the glitch repo and again not be publicly visible
 .env
+
+data.json
+text.json

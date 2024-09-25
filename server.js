@@ -9,6 +9,7 @@ const { checkDays } = require('./server/checkDays.js');
 const { insertDummyData } = require('./server/insertDummyData.js');
 const { createTable } = require('./server/createTable.js');
 const { checkTableExists } = require('./server/checkTableExists.js');
+const { selectLatestTideTimes, selectLatestWeatherAndSolarData } = require('./server/selectStatements.js');
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -62,89 +63,39 @@ app.get("/", (request, response) => {
 });
 
 // define tideTimesDBquery endpoint
-app.get("/tideTimesDBquery", (request, response) => {
+app.get("/tideTimesDBquery", async (request, response) => {
   console.log("tideTimesDBquery internal server endpoint received get request");
-  db.all("SELECT TideTimesObject FROM TideTimes WHERE time = (SELECT MAX(time) FROM TideTimes);", 
-    (err, rows) => { // Change 'string' to 'rows' to reflect that it's an array of objects
-      if (err) {
-        console.error("Database error:", err);
-        return response.status(500).json({ error: "Database error" });
-      }
-      
-      // Check if rows is not empty
-      if (rows.length === 0) {
-        return response.status(404).json({ error: "No data found" });
-      }
+  try {
+    const tideTimesObjectString = await selectLatestTideTimes(db);
+    if (!tideTimesObjectString) {
+      return response.status(404).json({ error: "No data found" });
+    }
 
-      // Assuming you want the last entry
-      const tideTimesObjectString = rows[0].TideTimesObject; // Access the first row's TideTimesObject
-      // console.log(`TideTimesObject string: ${tideTimesObjectString}`);
-      
-
-      try {
-        const tideTimesObject = JSON.parse(tideTimesObjectString); // Parse the JSON string
-        // console.log(`tideTimesObject: ${tideTimesObject}`);
-        response.json(tideTimesObject); // Send the parsed JSON
-      } catch (parseError) {
-        console.error("JSON parsing error:", parseError);
-        response.status(500).json({ error: "Invalid JSON format" });
-      }
-    });
+    const tideTimesObject = JSON.parse(tideTimesObjectString);
+    response.json(tideTimesObject);
+  } catch (err) {
+    console.error("Database error:", err);
+    response.status(500).json({ error: "Database error" });
+  }
 });
 
 // define weatherAndSolarDBquery endpoint
-app.get("/weatherAndSolarDBquery", (request, response) => {
+app.get("/weatherAndSolarDBquery", async (request, response) => {
   console.log("weatherAndSolarDBquery internal server endpoint received get request");
-
-  // Query to get the latest WeatherDataObject
-  const weatherQuery = "SELECT WeatherDataObject FROM WeatherData WHERE time = (SELECT MAX(time) FROM WeatherData);";
-  
-  // Query to get the latest SolarDataObject
-  const solarQuery = "SELECT SolarDataObject FROM SolarData WHERE time = (SELECT MAX(time) FROM SolarData);";
-
-  // Execute both queries in parallel
-  db.all(weatherQuery, (err, weatherRows) => {
-    if (err) {
-      console.error("Database error:", err);
-      return response.status(500).json({ error: "Database error" });
+  try {
+    const { weatherData, solarData } = await selectLatestWeatherAndSolarData(db);
+    if (!weatherData && !solarData) {
+      return response.status(404).json({ error: "No data found" });
     }
 
-    // Check if weatherRows is not empty
-    if (weatherRows.length === 0) {
-      return response.status(404).json({ error: "No weather data found" });
-    }
-
-    const weatherDataObjectString = weatherRows[0].WeatherDataObject; // Access the first row's WeatherDataObject
-
-    // Execute the solar query
-    db.all(solarQuery, (err, solarRows) => {
-      if (err) {
-        console.error("Database error:", err);
-        return response.status(500).json({ error: "Database error" });
-      }
-
-      // Check if solarRows is not empty
-      if (solarRows.length === 0) {
-        return response.status(404).json({ error: "No solar data found" });
-      }
-
-      const solarDataObjectString = solarRows[0].SolarDataObject; // Access the first row's SolarDataObject
-
-      try {
-        const weatherDataObject = JSON.parse(weatherDataObjectString); // Parse the JSON string
-        const solarDataObject = JSON.parse(solarDataObjectString); // Parse the JSON string
-
-        // Send both parsed JSON objects in the response
-        response.json({
-          weatherData: weatherDataObject,
-          solarData: solarDataObject
-        });
-      } catch (parseError) {
-        console.error("JSON parsing error:", parseError);
-        response.status(500).json({ error: "Invalid JSON format" });
-      }
+    response.json({
+      weatherData,
+      solarData
     });
-  });
+  } catch (err) {
+    console.error("Database error:", err);
+    response.status(500).json({ error: "Database error" });
+  }
 });
 
 
