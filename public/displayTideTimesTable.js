@@ -51,7 +51,7 @@ export const displayTideTimesTable = (tideTimesObject, containerId) => {
             const dateCell = dateRow.insertCell(0);
             dateCell.colSpan = 3; // Span across all columns
             dateCell.textContent = `${dayOfWeek}, ${formattedDateString}`; // Day and Date
-            dateCell.style.fontWeight = "bold"; // Make the date bold
+            dateCell.classList.add('sticky-date'); // Add sticky class to the date cell
         }
 
         // Create a new row for tide data
