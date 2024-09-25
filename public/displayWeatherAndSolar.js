@@ -32,25 +32,37 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
 
     const tbody = table.createTBody();
 
-    // Helper function to create a cell and apply styles if it's today
-    const createCell = (row, content, isToday) => {
-        const cell = row.insertCell();
-        cell.textContent = content;
-        if (isToday) {
-            cell.style.backgroundColor = "lightblue"; // Change background color to light blue
-        }
-        return cell;
-    };
+    // Variable to keep track of the last displayed date
+    let lastDisplayedDate = "";
 
     // Loop through the weather data and create rows
     weatherData.hours.forEach((hour, index) => {
-        const row = tbody.insertRow();
-        
         // Format the time using formatDate function
         const { formattedDate, isToday } = formatDate(hour.time);
+        const entryDate = new Date(hour.time); // Create a Date object for formatting
+        const dayOfWeek = formattedDate.split(", ")[0]; // Extract the day of the week
 
+        // Format the date as DD/MM/YYYY
+        const formattedDateString = `${String(entryDate.getDate()).padStart(2, '0')}/${String(entryDate.getMonth() + 1).padStart(2, '0')}/${entryDate.getFullYear()}`;
+
+        // Check if the date has changed
+        if (formattedDateString !== lastDisplayedDate) {
+            // Update the last displayed date
+            lastDisplayedDate = formattedDateString;
+
+            // Create a new row for the date header
+            const dateRow = tbody.insertRow();
+            const dateCell = dateRow.insertCell(0);
+            dateCell.colSpan = 8; // Span across all columns
+            dateCell.textContent = `${dayOfWeek}, ${formattedDateString}`; // Day and Date
+            dateCell.style.fontWeight = "bold"; // Make the date bold
+        }
+
+        // Create a new row for weather data
+        const row = tbody.insertRow();
+        
         // Use the helper function to create cells for weather data
-        createCell(row, formattedDate, isToday); // Time cell
+        createCell(row, formattedDate.split(", ")[1], isToday); // Time cell (only time)
         createCell(row, hour.windSpeed.noaa, isToday); // Wind Speed (noaa)
         createCell(row, hour.gust.noaa, isToday); // Gust (noaa)
         createCell(row, hour.pressure.noaa, isToday); // Pressure (noaa)
@@ -85,4 +97,14 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
 
     // Append the table to the specified container
     container.appendChild(table);
+};
+
+// Helper function to create a cell and apply styles if it's today
+const createCell = (row, content, isToday) => {
+    const cell = row.insertCell();
+    cell.textContent = content;
+    if (isToday) {
+        cell.style.backgroundColor = "lightblue"; // Change background color to light blue
+    }
+    return cell;
 };
