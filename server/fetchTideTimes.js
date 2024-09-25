@@ -24,8 +24,8 @@ const lng = "-8.833"
 const url = `https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${startTimestamp}&end=${endTimestamp}`;
 
 // Function to make an API call
-async function getTideTimes() {
-  console.log("getTideTimes() function called")
+async function fetchTideTimes() {
+  console.log("fetchTideTimes() function called")
   try {
       const response = await fetch(
         url, {
@@ -44,4 +44,4 @@ async function getTideTimes() {
   }
 }
 
-module.exports = { getTideTimes };
+module.exports = { fetchTideTimes };
