@@ -1,4 +1,4 @@
-// getWeatherData.js
+// fetchWeatherAndSolarData.js
 
 // Import node-fetch to make it compatible with Glitch (you will also need to run: npm install node-fetch@2)
 const fetch = require("node-fetch");

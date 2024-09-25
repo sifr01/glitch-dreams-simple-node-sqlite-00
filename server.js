@@ -2,8 +2,8 @@
 // where your node app starts
 
 // init project
-const { getTideTimes } = require('./server/getTideTimes.js');
-const { getWeatherAndSolarData } = require('./server/getWeatherAndSolarData.js');
+const { getTideTimes } = require('./server/fetchTideTimes.js');
+const { getWeatherAndSolarData } = require('./server/fetchWeatherAndSolarData.js');
 const { insertAPIdata } = require('./server/insertAPIdata.js');
 const { checkDays } = require('./server/checkDays.js');
 const { insertDummyData } = require('./server/insertDummyData.js');
