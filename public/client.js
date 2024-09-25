@@ -73,7 +73,7 @@ weatherDBquery.addEventListener('click', event => {
 tideTimesButton.addEventListener('click', event => {
     console.log("tideTimesButton API button clicked");
     showTable(tideTimesTable); // Show tide times table
-    fetch("/getTideTimes", {})
+    fetch("/fetchTideTimes", {})
         .then(response => {
             if (response.status === 429) {
                 return response.json().then(data => {
@@ -84,7 +84,7 @@ tideTimesButton.addEventListener('click', event => {
         })
         .then(data => {
             if (data) {
-                console.log("The getTideTimes endpoint response message is: ", data);
+                console.log("The fetchTideTimes endpoint response message is: ", data);
                 // Handle the tide times data here if needed
             }
         })
@@ -98,7 +98,7 @@ tideTimesButton.addEventListener('click', event => {
 weatherDataButton.addEventListener('click', event => {
     console.log("weatherDataButton API button clicked");
     showTable(weatherSolarOutput); // Show weather data output
-    fetch("/getWeatherAndSolarData", {})
+    fetch("/fetchWeatherAndSolarData", {})
         .then(response => {
             if (response.status === 429) {
                 return response.json().then(data => {
@@ -109,7 +109,7 @@ weatherDataButton.addEventListener('click', event => {
         })
         .then(data => {
             if (data) {
-                console.log("The getWeatherAndSolarData endpoint response message is: ", data);
+                console.log("The fetchWeatherAndSolarData endpoint response message is: ", data);
                 // Handle the weather data here if needed
             }
         })

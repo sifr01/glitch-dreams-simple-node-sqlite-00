@@ -2,8 +2,8 @@
 // where your node app starts
 
 // init project
-const { getTideTimes } = require('./server/fetchTideTimes.js');
-const { getWeatherAndSolarData } = require('./server/fetchWeatherAndSolarData.js');
+const { fetchTideTimes } = require('./server/fetchTideTimes.js');
+const { fetchWeatherAndSolarData } = require('./server/fetchWeatherAndSolarData.js');
 const { insertAPIdata } = require('./server/insertAPIdata.js');
 const { checkDays } = require('./server/checkDays.js');
 const { insertDummyData } = require('./server/insertDummyData.js');
@@ -102,9 +102,9 @@ app.get("/weatherAndSolarDBquery", async (request, response) => {
 
 // ============================================================================
 
-// Endpoint for getTideTimes (API call) and insertion of API data into the SQLite database
-app.get('/getTideTimes', async (req, res) => {
-  console.log('GET request reached the internal server side endpoint: getTideTimes');
+// Endpoint for fetchTideTimes (API call) and insertion of API data into the SQLite database
+app.get('/fetchTideTimes', async (req, res) => {
+  console.log('GET request reached the internal server side endpoint: fetchTideTimes');
 
   try {
     // 1. Check if more than x number of days have passed since the last tide times table entry
@@ -118,10 +118,10 @@ app.get('/getTideTimes', async (req, res) => {
       return res.status(429).json({ message: `API call not allowed. Last entry was less than ${numberOfDays} day(s) ago.` });
     }
 
-    // 2. Make the API call to get tide times (getTideTimes.js)
-    const tideTimesData = await getTideTimes(); // Await the result of the API call
+    // 2. Make the API call to get tide times (fetchTideTimes.js)
+    const tideTimesData = await fetchTideTimes(); // Await the result of the API call
     const apiData = JSON.stringify(tideTimesData)
-    console.log("getTideTimes() returns: " + apiData); // Log the resolved value
+    console.log("fetchTideTimes() returns: " + apiData); // Log the resolved value
 
     // 3. Cleanse the data (cleanseString())
     // const cleansedAPIdata = cleanseString(req.body.APIdata);
@@ -143,9 +143,9 @@ app.get('/getTideTimes', async (req, res) => {
 });
 
 
-// Endpoint for getWeatherAndSolarData (API call) and insertion of API data into the SQLite database
-app.get('/getWeatherAndSolarData', async (req, res) => {
-  console.log('GET request reached the internal server side endpoint: getWeatherAndSolarData');
+// Endpoint for fetchWeatherAndSolarData (API call) and insertion of API data into the SQLite database
+app.get('/fetchWeatherAndSolarData', async (req, res) => {
+  console.log('GET request reached the internal server side endpoint: fetchWeatherAndSolarData');
 
   try {
     // 1. Check if more than x number of days have passed since the last weather data table entry
@@ -159,8 +159,8 @@ app.get('/getWeatherAndSolarData', async (req, res) => {
       return res.status(429).json({ message: `API call not allowed. Last entry was less than ${numberOfDays} day(s) ago.` });
     }
 
-    // 2. Make the API call to get weather data (getWeatherAndSolarData.js)
-    const getResponse = await getWeatherAndSolarData(); // Await the result of the API call
+    // 2. Make the API call to get weather data (fetchWeatherAndSolarData.js)
+    const getResponse = await fetchWeatherAndSolarData(); // Await the result of the API call
     const theWeatherData = JSON.stringify(getResponse.weatherData);
     const theSolarData = JSON.stringify(getResponse.solarData);
     
