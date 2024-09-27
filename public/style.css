@@ -98,18 +98,41 @@ thead {
 
 .sticky-header {
   position: sticky;
-  top: 0; /* Header sticks to the top */
+  top: -1px; /* Header sticks to the top */
   background-color: white; /* Background color to cover content below */
   z-index: 2; /* Ensure it appears above other content */
 }
 
 .sticky-date {
   position: sticky;
-    top: 30px; /* Adjust this value based on your header height */
   background-color: white; /* Background color to cover content below */
   z-index: 3; /* Ensure it appears below the header */
   font-weight: bold; /* Make the date bold */
 }
+
+.sticky-date-tides {
+  top: 28px; /* Adjust this value based on your header height */
+}
+
+.sticky-date-weather {
+  position: sticky;
+  top: 28px; /* Default value for larger viewports */
+}
+
+/* When viewport width is 839px or less */
+@media (max-width: 839px) {
+  .sticky-date-weather {
+    top: 60px; /* Adjusted value for smaller viewports */
+  }
+}
+
+/* When viewport width is between 840px and 1110px */
+@media (min-width: 840px) and (max-width: 1110px) {
+  .sticky-date-weather {
+    top: 45px; /* Adjusted value for medium viewports */
+  }
+}
+
 
 
 /* time column width */

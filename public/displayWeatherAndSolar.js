@@ -55,7 +55,7 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
             const dateCell = dateRow.insertCell(0);
             dateCell.colSpan = 8; // Span across all columns
             dateCell.textContent = `${dayOfWeek}, ${formattedDateString}`; // Day and Date
-            dateCell.classList.add('sticky-date'); // Add sticky class to the date cell
+            dateCell.classList.add('sticky-date', 'sticky-date-weather'); // Add sticky classes to the date cell
             dateCell.style.fontWeight = "bold"; // Make the date bold
         }
 
