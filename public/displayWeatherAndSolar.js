@@ -10,7 +10,7 @@ export const displayWeatherAndSolar = (weatherAndSolarObject, containerId) => {
     container.innerHTML = ""; // Clear previous entries
 
     const h1 = document.createElement("h1");
-    h1.innerText = "Weather and Solar Data";
+    h1.innerText = "Marine Weather & Solar Data";
     container.appendChild(h1);
 
     const table = document.createElement('table');
