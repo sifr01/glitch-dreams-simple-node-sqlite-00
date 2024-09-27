@@ -108,14 +108,6 @@ thead {
   background-color: white; /* Background color to cover content below */
   z-index: 3; /* Ensure it appears below the header */
   font-weight: bold; /* Make the date bold */
-}
-
-.sticky-date-tides {
-  top: 28px; /* Adjust this value based on your header height */
-}
-
-.sticky-date-weather {
-  position: sticky;
   top: 28px; /* Default value for larger viewports */
 }
 
@@ -132,8 +124,6 @@ thead {
     top: 45px; /* Adjusted value for medium viewports */
   }
 }
-
-
 
 /* time column width */
 th:first-child, td:first-child {
