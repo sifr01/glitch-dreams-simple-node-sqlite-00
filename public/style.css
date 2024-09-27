@@ -108,7 +108,7 @@ thead {
   background-color: white; /* Background color to cover content below */
   z-index: 3; /* Ensure it appears below the header */
   font-weight: bold; /* Make the date bold */
-  top: 28px; /* Default value for larger viewports */
+  top: 27px; /* Default value for larger viewports */
 }
 
 /* When viewport width is 839px or less */
