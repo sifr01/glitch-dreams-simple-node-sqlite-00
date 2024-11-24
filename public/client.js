@@ -22,7 +22,7 @@ const weatherDBquery = document.querySelector('#weather-DB-query');
 const tideTimesTab = document.getElementById('tide-times-DB-query');
 const weatherTab = document.getElementById('weather-DB-query');
 
-// Event listener for tide times database query (SELECT)
+// A1 Event listener for tide times database query (SELECT)
 tideTimesDBquery.addEventListener('click', event => {
     console.log("tideTimesDBquery button clicked");
     switchTab(tideTimesTab);
@@ -44,7 +44,7 @@ tideTimesDBquery.addEventListener('click', event => {
         });
 });
 
-// Event listener for weather data database query (SELECT)
+// A2 Event listener for weather data database query (SELECT)
 weatherDBquery.addEventListener('click', event => {
     console.log("weather-data-DB-query button clicked");
     switchTab(weatherTab);
@@ -69,32 +69,50 @@ weatherDBquery.addEventListener('click', event => {
 
 // REFRESH FUNCTIONALITY REFRESH FUNCTIONALITY REFRESH FUNCTIONALITY
 
-// Event listener for tideTimesButton
-tideTimesButton.addEventListener('click', event => {
+// B1 Event listener for tideTimesButton
+tideTimesButton.addEventListener('click', async event => {
     console.log("tideTimesButton API button clicked");
     showTable(tideTimesTable); // Show tide times table
-    fetch("/fetchTideTimes", {})
-        .then(response => {
-            if (response.status === 429) {
-                return response.json().then(data => {
-                    displayErrorMessage(data.message);
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data) {
-                console.log("The fetchTideTimes endpoint response message is: ", data);
-                // Handle the tide times data here if needed
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching tide times:", error);
-            displayErrorMessage("An error occurred while fetching tide times.");
-        });
+
+    try {
+        // First fetch request
+        const response = await fetch("/fetchTideTimes", {});
+        
+        if (response.status === 429) {
+            const data = await response.json();
+            displayErrorMessage(data.message);
+            return; // Exit if rate limit is hit
+        }
+
+        const data = await response.json();
+        if (data) {
+            console.log("The fetchTideTimes endpoint response message is: ", data.message);
+
+            // Update the tide times table with the new data
+            displayTideTimesTable(data.result, 'tide-times-data'); // Ensure you pass the correct data
+        }
+
+        // Second fetch request
+        const dbResponse = await fetch("/tideTimesDBquery");
+        console.log("Response received from tideTimesDBquery:", dbResponse);
+        
+        if (!dbResponse.ok) {
+            throw new Error('Network response was not ok ' + dbResponse.statusText);
+        }
+
+        const dbData = await dbResponse.json();
+        console.log("Tide times data received:", dbData.data);
+        displayTideTimesTable(dbData.data, 'tide-times-data'); // Display tide times data
+        showTable(tideTimesTable); // Ensure the tide times table is shown
+
+    } catch (error) {
+        console.error("Error fetching tide times:", error);
+        displayErrorMessage("An error occurred while fetching tide times.");
+    }
 });
 
-// Event listener for weatherDataButton
+
+// B2 Event listener for weatherDataButton
 weatherDataButton.addEventListener('click', event => {
     console.log("weatherDataButton API button clicked");
     showTable(weatherSolarOutput); // Show weather data output
@@ -119,7 +137,8 @@ weatherDataButton.addEventListener('click', event => {
         });
 });
 
-// Simulate a click on the tideTimesDBquery button when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    tideTimesDBquery.click();
-});
+// TESTING: This doesnt work:
+// // Simulate a click on the tideTimesDBquery button when the page loads
+// document.addEventListener('DOMContentLoaded', () => {
+//     tideTimesDBquery.click();
+// });
