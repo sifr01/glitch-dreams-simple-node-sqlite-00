@@ -1,6 +1,6 @@
 # sifr's notes
 
-## Data Flow and API Handling
+## Data Flow and API Handling for tide times
 
 ```mermaid
 stateDiagram-v2
@@ -57,6 +57,9 @@ stateDiagram-v2
     %%class Frontend frontendStyle;
     %%class Backend backendStyle;
 ```
+
+## Data Flow and API Handling for solar and weather data
+(Yet to be added but is very similar to the diagram above)
 
 ## Github repo sync:
 When you import a GitHub repository into Glitch, it does not automatically set up a Git remote.
