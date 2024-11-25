@@ -14,15 +14,22 @@ stateDiagram-v2
             eventListenerB
             }
         }
-        displayTideTimesTable.js
-        
+        state /Public/ {
+            formatDate.js
+            displayTideTimesTable.js
+            switchTab.js
+            showTable.js
+        }
     }
     
     state Backend {
+        state /server/ {
+                insertAPIdata.js
+                selectStatements.js
+                fetchTideTimes.js
+            }
         state server.js {
-        state Handling_API_data {
-            /server/insertAPIdata.js
-        }
+            
         state Endpoints {
             '/fetchTideTimes'
             '/tideTimesDBquery'
@@ -32,30 +39,37 @@ stateDiagram-v2
             Table
         }
     }
+
+    state Public_API {
+        stormglass.io
+    }
   
+    formatDate.js --> displayTideTimesTable.js
     eventListenerA --> '/tideTimesDBquery'
+    eventListenerA --> switchTab.js
     eventListenerB --> '/fetchTideTimes'
-    Public_API --> /server/insertAPIdata.js: Object returned
-    /server/insertAPIdata.js --> SQLite_DB: Insert Data
-    '/fetchTideTimes' --> Public_API: API Call
-    '/tideTimesDBquery' --> SQLite_DB: database query SELECT statement
+    eventListenerA --> showTable.js
+    eventListenerB --> showTable.js
+
+    insertAPIdata.js --> SQLite_DB: Insert Data
+    
+    '/fetchTideTimes' --> fetchTideTimes.js
+    fetchTideTimes.js --> Public_API: API Call
+    Public_API --> insertAPIdata.js: Object returned
+
+    '/tideTimesDBquery' --> selectStatements.js
+    selectStatements.js --> SQLite_DB: database query SELECT statement
+    
     SQLite_DB --> displayTideTimesTable.js: database query returned SELECT statement
 
     %% Aliases - allows for whitespace
-    Handling_API_data: Handling API data
+    %%Handling_API_data: Handling API data
     SQLite_DB: SQLite3 database
-    Public_API: stormglass.io - Public API server
+    Public_API: Public API server
     Table: "TideTimes" table
     eventListenerA: tideTimesDBquery - tab at top of table
     eventListenerB: tideTimesButton - button at bottom of table - refresh tide times
 
-    %% Define styles
-    %%classDef frontendStyle fill:#f9f,stroke:#333,stroke-width:2px;
-    %%classDef backendStyle fill:#bbf,stroke:#333,stroke-width:2px;
-
-    %% Apply styles to states
-    %%class Frontend frontendStyle;
-    %%class Backend backendStyle;
 ```
 
 ## Data Flow and API Handling for solar and weather data
