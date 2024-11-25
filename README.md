@@ -17,18 +17,19 @@ stateDiagram-v2
         displayTideTimesTable.js
         
     }
+    
     state Backend {
+        state server.js {
+        state Handling_API_data {
+            /server/insertAPIdata.js
+        }
+        state Endpoints {
+            '/fetchTideTimes'
+            '/tideTimesDBquery'
+            }
+        }
         state SQLite_DB {
             Table
-        }
-        state server.js {
-            state Handling_API_data {
-                /server/insertAPIdata.js
-            }
-            state Endpoints {
-                '/fetchTideTimes'
-                '/tideTimesDBquery'
-            }
         }
     }
   
@@ -43,7 +44,7 @@ stateDiagram-v2
     %% Aliases - allows for whitespace
     Handling_API_data: Handling API data
     SQLite_DB: SQLite3 database
-    Public_API: Public API server
+    Public_API: stormglass.io - Public API server
     Table: "TideTimes" table
     eventListenerA: tideTimesDBquery - tab at top of table
     eventListenerB: tideTimesButton - button at bottom of table - refresh tide times
