@@ -1,5 +1,46 @@
 # sifr's notes
 
+## Data Flow and API Handling
+
+```mermaid
+stateDiagram-v2
+    [*] --> Frontend
+    client.js --> server.js
+
+    state Frontend {
+        client.js
+    }
+    state Backend {
+        state server.js {
+            state Handling_API_data {
+                /server/insertAPIdata.js
+            }
+            state Endpoints {
+                [*] --> '/fetchTideTimes'
+                [*] --> '/tideTimesDBquery'
+            }
+        }
+    }
+
+    Public_API --> /server/insertAPIdata.js: Object returned
+    /server/insertAPIdata.js --> SQLite_DB: Insert Data
+    '/fetchTideTimes' --> Public_API: API Call
+    SQLite_DB --> '/tideTimesDBquery': Query Data
+
+    %% Aliases - allows for whitespace
+    Handling_API_data: Handling API data
+    SQLite_DB: SQLite3 DB
+    Public_API: Public API server
+
+    %% Define styles
+    classDef frontendStyle fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef backendStyle fill:#bbf,stroke:#333,stroke-width:2px;
+
+    %% Apply styles to states
+    class Frontend frontendStyle;
+    class Backend backendStyle;
+```
+
 ## Github repo sync:
 When you import a GitHub repository into Glitch, it does not automatically set up a Git remote.
 You can manually initialize a Git repository and add a remote and then manually push or pull changes from within the glitch terminal:
