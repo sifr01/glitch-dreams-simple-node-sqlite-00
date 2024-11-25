@@ -4,41 +4,57 @@
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Frontend
-    client.js --> server.js
+    %%[*] --> Frontend
+    %%client.js --> Endpoints
 
     state Frontend {
-        client.js
+        state client.js {
+            state addEventListener {
+            eventListenerA
+            eventListenerB
+            }
+        }
+        displayTideTimesTable.js
+        
     }
     state Backend {
+        state SQLite_DB {
+            Table
+        }
         state server.js {
             state Handling_API_data {
                 /server/insertAPIdata.js
             }
             state Endpoints {
-                [*] --> '/fetchTideTimes'
-                [*] --> '/tideTimesDBquery'
+                '/fetchTideTimes'
+                '/tideTimesDBquery'
             }
         }
     }
-
+  
+    eventListenerA --> '/tideTimesDBquery'
+    eventListenerB --> '/fetchTideTimes'
     Public_API --> /server/insertAPIdata.js: Object returned
     /server/insertAPIdata.js --> SQLite_DB: Insert Data
     '/fetchTideTimes' --> Public_API: API Call
-    SQLite_DB --> '/tideTimesDBquery': Query Data
+    '/tideTimesDBquery' --> SQLite_DB: database query SELECT statement
+    SQLite_DB --> displayTideTimesTable.js: database query returned SELECT statement
 
     %% Aliases - allows for whitespace
     Handling_API_data: Handling API data
-    SQLite_DB: SQLite3 DB
+    SQLite_DB: SQLite3 database
     Public_API: Public API server
+    Table: "TideTimes" table
+    eventListenerA: tideTimesDBquery - tab at top of table
+    eventListenerB: tideTimesButton - button at bottom of table - refresh tide times
 
     %% Define styles
-    classDef frontendStyle fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef backendStyle fill:#bbf,stroke:#333,stroke-width:2px;
+    %%classDef frontendStyle fill:#f9f,stroke:#333,stroke-width:2px;
+    %%classDef backendStyle fill:#bbf,stroke:#333,stroke-width:2px;
 
     %% Apply styles to states
-    class Frontend frontendStyle;
-    class Backend backendStyle;
+    %%class Frontend frontendStyle;
+    %%class Backend backendStyle;
 ```
 
 ## Github repo sync:
@@ -94,11 +110,20 @@ sudo apt install sqlite3
 
 ## Example API call data:
 
-Endpoint: 
+Endpoints: 
 
+#### Public API server:
 `https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${startTimestamp}&end=${endTimestamp}`
 
-Data as stored in DB:
+#### server.js GET endpoints:
+```
+http://localhost:${PORT}/tideTimesDBquery
+http://localhost:${PORT}/fetchTideTimes
+http://localhost:${PORT}/weatherAndSolarDBquery
+http://localhost:${PORT}/fetchWeatherAndSolarData
+```
+
+#### Example data as stored in DB:
 ```
 10|{"data":[{"height":-0.9937196070594816,"time":"2024-08-09T23:47:00+00:00","type":"low"},{"height":0.8685125273601144,"time":"2024-08-10T05:57:00+00:00","type":"high"},{"height":-0.8766247267372509,"time":"2024-08-10T11:56:00+00:00","type":"low"},{"height":0.9125929883379379,"time":"2024-08-10T18:10:00+00:00","type":"high"},{"height":-0.8647022223319859,"time":"2024-08-11T00:20:00+00:00","type":"low"},{"height":0.7608925307060468,"time":"2024-08-11T06:34:00+00:00","type":"high"},{"height":-0.7314693024644449,"time":"2024-08-11T12:34:00+00:00","type":"low"},{"height":0.746783704972198,"time":"2024-08-11T18:49:00+00:00","type":"high"}],"meta":{"cost":1,"dailyQuota":10,"datum":"MSL","end":"2024-08-11 22:59","lat":40.4511,"lng":-8.8067,"offset":0,"requestCount":1,"start":"2024-08-09 23:00","station":{"distance":23,"lat":40.65,"lng":-8.75,"name":"aveiro","source":"sg"}}}|1723295160576
 ```
