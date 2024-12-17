@@ -1,8 +1,8 @@
-// client.js
+// public/client.js
 
 import { displayTideTimesTable } from './displayTideTimesTable.js';
 import { displayWeatherAndSolar } from './displayWeatherAndSolar.js';
-import { displayErrorMessage } from './displayErrorMessages.js';
+import { displayErrorMessages } from './displayErrorMessages.js';
 import { switchTab } from './switchTab.js';
 import { showTable } from './showTable.js';
 
@@ -35,7 +35,7 @@ tideTimesDBquery.addEventListener('click', event => {
             return response.json();
         })
         .then(data => {
-            console.log("Tide times data received:", data.data);
+            console.log("client.js: Tide times data received:", data.data);
             displayTideTimesTable(data.data, 'tide-times-data'); // Display tide times data
             showTable(tideTimesTable); // Ensure the tide times table is shown
         })
@@ -72,45 +72,45 @@ weatherDBquery.addEventListener('click', event => {
 // B1 Event listener for tideTimesButton
 tideTimesButton.addEventListener('click', async event => {
     console.log("tideTimesButton API button clicked");
-    showTable(tideTimesTable); // Show tide times table
 
     try {
-        // First fetch request
-        const response = await fetch("/fetchTideTimes", {});
-        
-        if (response.status === 429) {
-            const data = await response.json();
-            displayErrorMessage(data.message);
-            return; // Exit if rate limit is hit
+        // Step 1: Make the API call and insert data into DB
+        displayErrorMessages("API call is in progress...", "status-messages")
+        console.log("API fetch attempt made");
+
+        const apiResponse = await fetch("/fetchTideTimes"); //this endpoint does both
+        if (!apiResponse.ok) {
+            throw new Error(`API call failed: ${apiResponse.statusText}`);
         }
+        const APIdata = await apiResponse.json();
+        console.log("API data received:", APIdata);
 
-        const data = await response.json();
-        if (data) {
-            console.log("The fetchTideTimes endpoint response message is: ", data.message);
+        // // Step 2: Insert data into the database
+        // needs an update progress HERE ---------
+        // const db = /* Get your SQLite database connection here */;
+        // const insertResult = await insertAPIdata(db, 'TideTimes', APIdata); //server/insertAPIdata.js is not allowed anyway!
+        // console.log("Data inserted into the database successfully:", insertResult);
 
-            // Update the tide times table with the new data
-            displayTideTimesTable(data.result, 'tide-times-data'); // Ensure you pass the correct data
+        // Step 3: Perform a database query
+        displayErrorMessages("sqlite3 DB query is in progress...", "status-messages")
+        const queryResponse = await fetch("/tideTimesDBquery");
+        if (!queryResponse.ok) {
+            throw new Error(`Database query failed: ${queryResponse.statusText}`);
         }
+        const queryData = await queryResponse.json();
+        console.log("Data received from database query:", queryData);
 
-        // Second fetch request
-        const dbResponse = await fetch("/tideTimesDBquery");
-        console.log("Response received from tideTimesDBquery:", dbResponse);
-        
-        if (!dbResponse.ok) {
-            throw new Error('Network response was not ok ' + dbResponse.statusText);
-        }
-
-        const dbData = await dbResponse.json();
-        console.log("Tide times data received:", dbData.data);
-        displayTideTimesTable(dbData.data, 'tide-times-data'); // Display tide times data
-        showTable(tideTimesTable); // Ensure the tide times table is shown
+        // Step 4: Update the DOM
+        // update progress
+        displayErrorMessages("updating your table...", "status-messages")
+        displayTideTimesTable(queryData.data, 'tide-times-data'); // Assuming queryData.data is the array of tide times
+        console.log("DOM updated with new tide times data.");
 
     } catch (error) {
-        console.error("Error fetching tide times:", error);
-        displayErrorMessage("An error occurred while fetching tide times.");
+        console.error("Error during the process:", error);
+        displayErrorMessages("An error occurred while processing tide times.", "error-messages");
     }
 });
-
 
 // B2 Event listener for weatherDataButton
 weatherDataButton.addEventListener('click', event => {
@@ -120,7 +120,7 @@ weatherDataButton.addEventListener('click', event => {
         .then(response => {
             if (response.status === 429) {
                 return response.json().then(data => {
-                    displayErrorMessage(data.message);
+                    displayErrorMessages(data.message, "error-messages");
                 });
             }
             return response.json();
@@ -133,12 +133,6 @@ weatherDataButton.addEventListener('click', event => {
         })
         .catch(error => {
             console.error("Error fetching weather data:", error);
-            displayErrorMessage("An error occurred while fetching weather data.");
+            displayErrorMessages("An error occurred while fetching weather data.", "error-messages");
         });
 });
-
-// TESTING: This doesnt work:
-// // Simulate a click on the tideTimesDBquery button when the page loads
-// document.addEventListener('DOMContentLoaded', () => {
-//     tideTimesDBquery.click();
-// });

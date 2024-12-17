@@ -1,10 +1,12 @@
-// displayTideTimesTable.js
+// public/displayTideTimesTable.js
 
 import { formatDate } from './formatDate.js';
 
 // Function to create and display a tide times table
 export const displayTideTimesTable = (tideTimesObject, containerId) => {
+    console.log("displayTideTimesTable() called")
     const data = tideTimesObject; // Parse the tideTimesObject to get the data
+    console.log("displayTideTimesTable.js: Tide times data retrieved from sqlite3 DB:", data);      //bug fixing troubleshooting
 
     const container = document.getElementById(containerId);
     container.innerHTML = ""; // Clear previous entries

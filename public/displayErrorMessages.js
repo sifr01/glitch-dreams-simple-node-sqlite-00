@@ -1,7 +1,7 @@
 // displayErrorMessages.js
 // Function to create and display error messages in the DOM
-export function displayErrorMessage(message) {
-    const errorMessageContainer = document.getElementById("error-messages");
+export function displayErrorMessages(message, destination) {
+    const errorMessageContainer = document.getElementById(destination);
     errorMessageContainer.innerHTML = ""; // Clear previous messages
   
     const errorMessageElement = document.createElement("div");
