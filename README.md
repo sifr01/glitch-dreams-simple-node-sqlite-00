@@ -8,6 +8,9 @@ stateDiagram-v2
     %%client.js --> Endpoints
 
     state Frontend {
+        state DOM {
+            views/index.html
+        }
         state client.js {
             state addEventListener {
             eventListenerA
@@ -19,6 +22,7 @@ stateDiagram-v2
             displayTideTimesTable.js
             switchTab.js
             showTable.js
+            displayErrorMessages.js
         }
     }
     
@@ -28,6 +32,7 @@ stateDiagram-v2
                 selectStatements.js
                 fetchTideTimes.js
                 timeStampofThirtyDays.js
+                checkDays.js
             }
         state server.js {
             
@@ -58,7 +63,8 @@ stateDiagram-v2
     credentials_storage --> fetchTideTimes.js
     timeStampofThirtyDays.js --> fetchTideTimes.js ##this does not exist in weather data
 
-    '/fetchTideTimes' --> fetchTideTimes.js
+    '/fetchTideTimes' --> checkDays.js
+    checkDays.js --> fetchTideTimes.js
     fetchTideTimes.js --> Public_API: API Call
     Public_API --> insertAPIdata.js: Object returned
 
@@ -66,6 +72,8 @@ stateDiagram-v2
     selectStatements.js --> SQLite_DB: database query SELECT statement
     
     SQLite_DB --> displayTideTimesTable.js: database query returned SELECT statement
+    displayTideTimesTable.js --> DOM
+    displayErrorMessages.js --> DOM
 
     %% Aliases - allows for whitespace
     %%Handling_API_data: Handling API data
@@ -76,6 +84,9 @@ stateDiagram-v2
     eventListenerB: tideTimesButton - button at bottom of table - refresh tide times
     credentials_storage: Hidden credentials storage
     credentials: .env file
+    checkDays.js: await checkDays.js
+    fetchTideTimes.js: await fetchTideTimes.js
+    insertAPIdata.js: await insertAPIdata.js
 
 ```
 
