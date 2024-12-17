@@ -1,5 +1,8 @@
 // fetchWeatherAndSolarData.js
 
+// carries out 2 API calls using a fetch:
+//   for data at specified GPS co-ordinates and 
+
 // Import node-fetch to make it compatible with Glitch (you will also need to run: npm install node-fetch@2)
 const fetch = require("node-fetch");
 
@@ -25,12 +28,12 @@ const fetchWeatherAndSolarData = async () => {
     const [responseWeather, responseSolar] = await Promise.all([
       fetch(urlWeather, {
         headers: {
-          'Authorization': apiKey // Replace with your actual API key
+          'Authorization': apiKey
         }
       }),
       fetch(urlSolar, {
         headers: {
-          'Authorization': apiKey // Replace with your actual API key
+          'Authorization': apiKey
         }
       })
     ]);

@@ -1,4 +1,9 @@
-// fetchTideTimes.js
+// server/fetchTideTimes.js
+
+// calculates 30 days from now and 
+// carries out the API call using a fetch:
+//   for data at specified GPS co-ordinates and 
+//   for 30 days of data
 
 // Import node-fetch to make it compatible with Glitch (you will also need to run: npm install node-fetch@2 )
 const fetch = require("node-fetch");
@@ -9,9 +14,6 @@ const apiKey = process.env.API_KEY;
 
 // Import the function from todayTomorrowTimestamps.js
 const getTodayTomorrowTimestamps = require('./timeStampofThirtyDays.js');
-
-// const url = "https://jsonplaceholder.typicode.com/todos/1";
-// const url = "https://randomuser.me/api/";
 
 //times for today and tomorrow
 const timestamps = getTodayTomorrowTimestamps();
@@ -30,7 +32,7 @@ async function fetchTideTimes() {
       const response = await fetch(
         url, {
         headers: {
-            'Authorization': apiKey     // Replace with your actual API key
+            'Authorization': apiKey
           }
         });
       if (!response.ok) {

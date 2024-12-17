@@ -27,16 +27,20 @@ stateDiagram-v2
                 insertAPIdata.js
                 selectStatements.js
                 fetchTideTimes.js
+                timeStampofThirtyDays.js
             }
         state server.js {
             
-        state Endpoints {
-            '/fetchTideTimes'
-            '/tideTimesDBquery'
-            }
+            state Endpoints {
+                '/fetchTideTimes'
+                '/tideTimesDBquery'
+                }
         }
         state SQLite_DB {
             Table
+        }
+        state credentials_storage{
+            credentials
         }
     }
 
@@ -50,9 +54,10 @@ stateDiagram-v2
     eventListenerB --> '/fetchTideTimes'
     eventListenerA --> showTable.js
     eventListenerB --> showTable.js
-
     insertAPIdata.js --> SQLite_DB: Insert Data
-    
+    credentials_storage --> fetchTideTimes.js
+    timeStampofThirtyDays.js --> fetchTideTimes.js ##this does not exist in weather data
+
     '/fetchTideTimes' --> fetchTideTimes.js
     fetchTideTimes.js --> Public_API: API Call
     Public_API --> insertAPIdata.js: Object returned
@@ -69,6 +74,8 @@ stateDiagram-v2
     Table: "TideTimes" table
     eventListenerA: tideTimesDBquery - tab at top of table
     eventListenerB: tideTimesButton - button at bottom of table - refresh tide times
+    credentials_storage: Hidden credentials storage
+    credentials: .env file
 
 ```
 
